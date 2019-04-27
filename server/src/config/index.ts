@@ -8,6 +8,7 @@ export interface Configuration {
 
 export enum RuntimeProfile {
   default = 'default',
+  test = 'test',
   override = 'override',
   alpha = 'alpha',
   sandbox = 'sandbox',
