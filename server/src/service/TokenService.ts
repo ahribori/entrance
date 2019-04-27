@@ -17,19 +17,19 @@ export interface VerifiedPayload extends TokenPayload{
   sub: string;
 }
 
-class AuthorizationService {
-  private static instance: AuthorizationService;
+class TokenService {
+  private static instance: TokenService;
   private readonly _secret: string;
 
   private constructor() {
     this._secret = config.secret;
   }
 
-  static getInstance(): AuthorizationService {
-    if (!AuthorizationService.instance) {
-      AuthorizationService.instance = new AuthorizationService();
+  static getInstance(): TokenService {
+    if (!TokenService.instance) {
+      TokenService.instance = new TokenService();
     }
-    return AuthorizationService.instance;
+    return TokenService.instance;
   }
 
   get secret() {
@@ -69,4 +69,4 @@ class AuthorizationService {
   }
 }
 
-export default AuthorizationService;
+export default TokenService;
