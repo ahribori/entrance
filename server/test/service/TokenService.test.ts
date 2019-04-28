@@ -1,7 +1,7 @@
 import TokenService, { TokenType } from '../../src/service/TokenService';
 import { JsonWebTokenError } from 'jsonwebtoken';
 
-describe('Authentication Tests', () => {
+describe('TokenService Tests', () => {
   const authorizationService = TokenService.getInstance();
 
   test('Secret key exist', () => {
