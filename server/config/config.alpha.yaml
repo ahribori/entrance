@@ -1,3 +1,8 @@
 port: 8080
 
 secret: jwt-secret-key
+
+dataSource:
+  url:
+  username:
+  password:

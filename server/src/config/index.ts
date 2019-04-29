@@ -5,6 +5,11 @@ import * as yaml from 'js-yaml';
 export interface Configuration {
   port: number;
   secret: string;
+  dataSource: {
+    url: string;
+    username: string;
+    password: string;
+  }
 }
 
 export enum RuntimeProfile {
