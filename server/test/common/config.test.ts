@@ -1,7 +1,7 @@
 import config from '../../src/config';
+import logger from '../../src/logger';
 
 describe('Configuration tests', () => {
-
   test('Runtime profile test', () => {
     expect(process.env.profile).toBe('test');
   });
@@ -11,4 +11,7 @@ describe('Configuration tests', () => {
     expect(config.port).not.toBeNull();
   });
 
+  test('Logger test', () => {
+    // logger.info('Hello, world!');
+  });
 });
