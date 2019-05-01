@@ -1,10 +1,13 @@
+import * as crypto from 'crypto';
 import TokenService from './TokenService';
+import Account from '../db/model/Account';
 
-enum ThirdPartyLoginProvider {
-  KAKAO = 'kakao',
-  NAVER = 'naver',
-  GOOGLE = 'google',
-  FACEBOOK = 'facebook',
+enum AccountType {
+  LOCAL = 'LOCAL',
+  KAKAO = 'KAKAO',
+  NAVER = 'NAVER',
+  GOOGLE = 'GOOGLE',
+  FACEBOOK = 'FACEBOOK',
 }
 
 interface AuthBag {
@@ -25,6 +28,48 @@ class AuthService {
   }
 
   /**
+   * 회원가입
+   * @param username
+   * @param password
+   * @param email
+   */
+  async signUp(username: string, password: string, email: string) {
+    const salt = this.createSalt();
+    const passwordHash = await this.createPasswordHash(password, salt);
+
+    return Account.create({
+      username,
+      salt,
+      password: passwordHash,
+      email,
+      accountType: AccountType.LOCAL,
+    });
+  }
+
+  /**
+   * Password와 Salt로 비밀번호 해쉬값을 만든다.
+   * @param password
+   * @param salt
+   */
+  async createPasswordHash(password: string, salt: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+      crypto.pbkdf2(password, salt, 94182, 64, 'sha512', async (err, buf) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(buf.toString('base64'));
+      });
+    });
+  }
+
+  /**
+   * base64로 인코딩된 salt값을 만든다.
+   */
+  createSalt() {
+    return crypto.randomBytes(64).toString('base64');
+  }
+
+  /**
    * 로그인
    * @param username
    * @param password
@@ -33,11 +78,11 @@ class AuthService {
 
   /**
    * 써드파티 로그인
-   * @param provider
+   * @param accountType
    * @param thirdPartyId
    */
   async thirdPartyLogin(
-    provider: ThirdPartyLoginProvider,
+    accountType: AccountType,
     thirdPartyId: string | number,
   ) {}
 
