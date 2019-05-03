@@ -58,7 +58,7 @@ class Account extends Model<Account> {
   salt!: string;
 
   @HasMany(() => Application)
-  ownApplications!: Application[];
+  ownedApplications!: Application[];
 
   @BelongsToMany(() => Application, () => Link)
   linkedApplications!: Application[];
