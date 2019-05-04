@@ -1,14 +1,6 @@
 import * as crypto from 'crypto';
 import TokenService from './TokenService';
-import Account from '../db/model/Account';
-
-enum AccountType {
-  LOCAL = 'LOCAL',
-  KAKAO = 'KAKAO',
-  NAVER = 'NAVER',
-  GOOGLE = 'GOOGLE',
-  FACEBOOK = 'FACEBOOK',
-}
+import AccountService, { AccountType } from './AccountService';
 
 interface AuthBag {
   accessToken: string;
@@ -30,19 +22,27 @@ class AuthService {
   /**
    * 회원가입
    * @param username
+   * @param nickname
    * @param password
    * @param email
    */
-  async signUp(username: string, password: string, email: string) {
+  async signUp(
+    username: string,
+    nickname: string,
+    password: string,
+    email: string,
+  ) {
+    const accountService = AccountService.getInstance();
     const salt = this.createSalt();
     const passwordHash = await this.createPasswordHash(password, salt);
 
-    return Account.create({
+    return accountService.createAccount({
+      accountType: AccountType.LOCAL,
       username,
-      salt,
       password: passwordHash,
       email,
-      accountType: AccountType.LOCAL,
+      nickname,
+      salt,
     });
   }
 

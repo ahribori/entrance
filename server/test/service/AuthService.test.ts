@@ -1,9 +1,9 @@
+import db from '../../src/db';
 import AuthService from '../../src/service/AuthService';
 import TokenService from '../../src/service/TokenService';
-import db from '../../src/db';
 
 beforeAll(async () => {
-  await db.sync({ force: true });
+  await db.authenticate();
 });
 
 describe('AuthService Tests', () => {
@@ -15,17 +15,17 @@ describe('AuthService Tests', () => {
 
     const user = await authService.signUp(
       'ahribori',
+      '아리보리',
       userInputPassword,
       'ahribori@gmail.com',
     );
 
-    const userSignedUp = user.dataValues;
+    const userSignedUp = user;
     const { salt, password } = userSignedUp;
     const userInputPasswordHash = await authService.createPasswordHash(
       userInputPassword,
       salt,
     );
-
     expect(userInputPasswordHash).toEqual(password);
   });
 
