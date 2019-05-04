@@ -10,7 +10,7 @@ export interface TokenPayload {
   accountId: string | number;
 }
 
-export interface VerifiedPayload extends TokenPayload{
+export interface VerifiedPayload extends TokenPayload {
   iat: number;
   exp: number;
   iss: string;

@@ -9,7 +9,7 @@ export interface Configuration {
     url: string;
     username: string;
     password: string;
-  }
+  };
 }
 
 export enum RuntimeProfile {
@@ -24,9 +24,12 @@ export enum RuntimeProfile {
 
 export type Profile = RuntimeProfile;
 
-const overrideConfigExist: boolean = fs.existsSync(path.resolve('config/config.override.yaml'));
+const overrideConfigExist: boolean = fs.existsSync(
+  path.resolve('config/config.override.yaml'),
+);
 
-let profile: Profile = (process.env.profile as Profile) || RuntimeProfile.default;
+let profile: Profile =
+  (process.env.profile as Profile) || RuntimeProfile.default;
 
 if (overrideConfigExist) {
   profile = RuntimeProfile.override;

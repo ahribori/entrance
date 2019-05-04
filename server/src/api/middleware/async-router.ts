@@ -1,11 +1,15 @@
 import { NextFunction, Request, Response } from 'express';
 
-interface EnhancedRequest extends Request{
+interface EnhancedRequest extends Request {
   clientIp?: string;
 }
 
 const asyncRouter = (
-  asyncFunction: (req: EnhancedRequest, res: Response, next: NextFunction) => {},
+  asyncFunction: (
+    req: EnhancedRequest,
+    res: Response,
+    next: NextFunction,
+  ) => {},
 ) => {
   return async (req: EnhancedRequest, res: Response, next: NextFunction) => {
     try {
