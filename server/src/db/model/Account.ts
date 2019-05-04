@@ -3,7 +3,8 @@ import {
   BelongsToMany,
   Column,
   Comment,
-  Default, HasMany,
+  Default,
+  HasMany,
   Model,
   Table,
   Unique,
@@ -24,9 +25,10 @@ class Account extends Model<Account> {
   @Column
   username!: string;
 
-  @Comment('비밀번호')
+  @Comment('닉네임')
+  @AllowNull(false)
   @Column
-  password!: string;
+  nickname!: string;
 
   @Comment('이메일')
   @AllowNull(false)
@@ -51,6 +53,16 @@ class Account extends Model<Account> {
   @Default(0)
   @Column
   point!: number;
+
+  @Comment('활성화 여부')
+  @AllowNull(false)
+  @Default(1)
+  @Column
+  active!: boolean;
+
+  @Comment('비밀번호')
+  @Column
+  password!: string;
 
   @Comment('비밀번호에 뿌리는 소금')
   @AllowNull(false)
