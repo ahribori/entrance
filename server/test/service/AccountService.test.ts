@@ -1,55 +1,52 @@
+import ApplicationService from '../../src/service/ApplicationService';
+
+const uniqueString = require('unique-string');
 import db from '../../src/db';
 import AccountService, { AccountType } from '../../src/service/AccountService';
 import AuthService from '../../src/service/AuthService';
 import PointNotEnoughException from '../../src/exception/account/PointNotEnoughException';
+import LinkService from '../../src/service/LinkService';
+
+const accountService = AccountService.getInstance();
+const applicationService = ApplicationService.getInstance();
+const authService = AuthService.getInstance();
+const linkService = LinkService.getInstance();
+
+const salt = authService.createSalt();
+
+let passwordHash: string;
+let getRandomUserInfo: Function;
 
 beforeAll(async () => {
   await db.authenticate();
+  passwordHash = await authService.createPasswordHash('123456', salt);
+  getRandomUserInfo = () => {
+    return {
+      email: `${uniqueString()}@gmail.com`,
+      username: uniqueString(),
+      nickname: uniqueString(),
+      password: passwordHash,
+      accountType: AccountType.LOCAL,
+      salt,
+    };
+  };
 });
 
 describe('AccountService Tests', () => {
-  const accountService = AccountService.getInstance();
-  const authService = AuthService.getInstance();
-
   test('Create User', async () => {
-    const salt = authService.createSalt();
-    const userCreated = await accountService.createAccount({
-      email: 'abcdefg1@gmail.com',
-      username: 'abcdefg1',
-      nickname: '닉네임',
-      password: await authService.createPasswordHash('123456', salt),
-      accountType: AccountType.LOCAL,
-      salt,
-    });
+    const userCreated = await accountService.createAccount(getRandomUserInfo());
     await expect(userCreated).toBeDefined();
   });
 
   test('Select', async () => {
-    const salt = authService.createSalt();
-    const userCreated = await accountService.createAccount({
-      email: 'abcdefg2@gmail.com',
-      username: 'abcdefg2',
-      nickname: '닉네임',
-      password: await authService.createPasswordHash('123456', salt),
-      accountType: AccountType.LOCAL,
-      salt,
-    });
-
+    const userCreated = await accountService.createAccount(getRandomUserInfo());
     const accountId = userCreated.id;
     const user = await accountService.findAccountById(accountId);
     await expect(user).toBeDefined();
   });
 
   test('Increase experience', async () => {
-    const salt = authService.createSalt();
-    const userCreated = await accountService.createAccount({
-      email: 'abcdefg3@gmail.com',
-      username: 'abcdefg3',
-      nickname: '닉네임',
-      password: await authService.createPasswordHash('123456', salt),
-      accountType: AccountType.LOCAL,
-      salt,
-    });
+    const userCreated = await accountService.createAccount(getRandomUserInfo());
 
     const user = await accountService.findAccountById(userCreated.id);
     if (user) {
@@ -64,16 +61,7 @@ describe('AccountService Tests', () => {
   });
 
   test('Increase & decrease point', async () => {
-    const salt = authService.createSalt();
-    const userCreated = await accountService.createAccount({
-      email: 'abcdefg4@gmail.com',
-      username: 'abcdefg4',
-      nickname: '닉네임',
-      password: await authService.createPasswordHash('123456', salt),
-      accountType: AccountType.LOCAL,
-      salt,
-    });
-
+    const userCreated = await accountService.createAccount(getRandomUserInfo());
     const user = await accountService.findAccountById(userCreated.id);
     if (user) {
       try {
@@ -98,5 +86,15 @@ describe('AccountService Tests', () => {
         expect(e instanceof PointNotEnoughException).toBeTruthy();
       }
     }
+  });
+
+  test('Find accounts by applicationId', async () => {
+    const account1 = await accountService.createAccount(getRandomUserInfo());
+    const account2 = await accountService.createAccount(getRandomUserInfo());
+    const application1 = await applicationService.createApplication(uniqueString(), account1.id, []);
+    await linkService.linkAccount(account1.id).toApplication(application1.id);
+    await linkService.linkAccount(account2.id).toApplication(application1.id);
+    const accounts = await accountService.findLinkedAccountsByApplicationId(1);
+    expect(accounts.length).toBeGreaterThan(0);
   });
 });

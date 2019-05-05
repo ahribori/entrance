@@ -1,6 +1,7 @@
 import Account from '../db/model/Account';
 import AccountNotFoundException from '../exception/account/AccountNotFoundException';
 import PointNotEnoughException from '../exception/account/PointNotEnoughException';
+import Application from '../db/model/Application';
 
 export enum AccountType {
   LOCAL = 'LOCAL',
@@ -39,6 +40,20 @@ class AccountService {
     return Account.findByPk(accountId);
   }
 
+  async findLinkedAccountsByApplicationId(applicationId: number) {
+    return Account.findAll({
+      include: [
+        {
+          model: Application,
+          as: 'linkedApplications',
+          where: {
+            id: applicationId,
+          },
+        },
+      ],
+    });
+  }
+
   async increaseExp(accountId: number, amount: number) {
     const account = await Account.findByPk(accountId);
     if (!account) {
@@ -64,7 +79,7 @@ class AccountService {
     if (decreasedPoint < 0) {
       throw new PointNotEnoughException();
     }
-    return account.update({ point:decreasedPoint });
+    return account.update({ point: decreasedPoint });
   }
 }
 
