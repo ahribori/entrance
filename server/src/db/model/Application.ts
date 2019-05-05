@@ -6,12 +6,13 @@ import {
   Column,
   ForeignKey,
   Model,
-  Table, Default,
+  Table,
+  Default,
 } from 'sequelize-typescript';
 import Account from './Account';
 import Link from './Link';
 
-@Table({ tableName: 'application' })
+@Table({ tableName: 'application', paranoid: true,  underscored: true })
 class Application extends Model<Application> {
   @Comment('어플리케이션 이름')
   @AllowNull(false)

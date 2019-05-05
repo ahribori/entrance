@@ -12,7 +12,7 @@ import {
 import Application from './Application';
 import Link from './Link';
 
-@Table({ tableName: 'account' })
+@Table({ tableName: 'account', paranoid: true, underscored: true })
 class Account extends Model<Account> {
   @Comment('계정 타입')
   @AllowNull(false)
