@@ -44,8 +44,7 @@ class AccountService {
     if (!account) {
       throw new AccountNotFoundException();
     }
-    account.exp = account.exp + amount;
-    return account.save();
+    return account.update({ exp: account.exp + amount });
   }
 
   async increasePoint(accountId: number, amount: number) {
@@ -53,8 +52,7 @@ class AccountService {
     if (!account) {
       throw new AccountNotFoundException();
     }
-    account.point = account.point + amount;
-    return account.save();
+    return account.update({ point: account.point + amount });
   }
 
   async decreasePoint(accountId: number, amount: number) {
@@ -66,8 +64,7 @@ class AccountService {
     if (decreasedPoint < 0) {
       throw new PointNotEnoughException();
     }
-    account.point = decreasedPoint;
-    return account.save();
+    return account.update({ point:decreasedPoint });
   }
 }
 
