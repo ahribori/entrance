@@ -6,7 +6,7 @@ import {
   Column,
   ForeignKey,
   Model,
-  Table,
+  Table, Default,
 } from 'sequelize-typescript';
 import Account from './Account';
 import Link from './Link';
@@ -31,6 +31,12 @@ class Application extends Model<Application> {
   @Comment('Origins')
   @Column
   origins!: string;
+
+  @Comment('활성화 여부')
+  @AllowNull(false)
+  @Default(1)
+  @Column
+  active!: boolean;
 
   @ForeignKey(() => Account)
   @Column
