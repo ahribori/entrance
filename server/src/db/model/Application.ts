@@ -18,6 +18,20 @@ class Application extends Model<Application> {
   @Column
   name!: string;
 
+  @Comment('REST API Key')
+  @AllowNull(false)
+  @Column
+  apiKey!: string;
+
+  @Comment('Javascript SDK Key')
+  @AllowNull(false)
+  @Column
+  sdkKey!: string;
+
+  @Comment('Origins')
+  @Column
+  origins!: string;
+
   @ForeignKey(() => Account)
   @Column
   accountId!: number;
