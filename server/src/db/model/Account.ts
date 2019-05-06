@@ -11,6 +11,7 @@ import {
 } from 'sequelize-typescript';
 import Application from './Application';
 import Link from './Link';
+import Role from './Role';
 
 @Table({ tableName: 'account', paranoid: true, underscored: true })
 class Account extends Model<Account> {
@@ -60,6 +61,14 @@ class Account extends Model<Account> {
   @Column
   active!: boolean;
 
+  @Comment('프로필 이미지')
+  @Column
+  profileImage!: string;
+
+  @Comment('썸네일 이미지')
+  @Column
+  thumbnailImage!: string;
+
   @Comment('비밀번호')
   @Column
   password!: string;
@@ -68,6 +77,9 @@ class Account extends Model<Account> {
   @AllowNull(false)
   @Column
   salt!: string;
+
+  @HasMany(() => Role)
+  roles!: Role[];
 
   @HasMany(() => Application)
   ownedApplications!: Application[];
