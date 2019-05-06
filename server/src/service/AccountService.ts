@@ -3,6 +3,9 @@ import Account from '../db/model/Account';
 import AccountNotFoundException from '../exception/account/AccountNotFoundException';
 import PointNotEnoughException from '../exception/account/PointNotEnoughException';
 import Application from '../db/model/Application';
+import TokenService from './TokenService';
+
+const tokenService = TokenService.getInstance();
 
 export enum AccountType {
   LOCAL = 'LOCAL',
@@ -65,7 +68,10 @@ class AccountService {
       account.active = false;
       await account.save({ transaction });
     }
-    const result = await Account.destroy({ where: { id: accountId }, transaction });
+    const result = await Account.destroy({
+      where: { id: accountId },
+      transaction,
+    });
     await transaction.commit();
     return result;
   }
@@ -96,6 +102,25 @@ class AccountService {
       throw new PointNotEnoughException();
     }
     return account.update({ point: decreasedPoint });
+  }
+
+  async sendEmailVerificationCode(accountId: number): Promise<string> {
+    const account = await Account.findByPk(accountId);
+    if (!account) {
+      throw new AccountNotFoundException();
+    }
+    return tokenService.issueEmailVerificationToken({ accountId });
+  }
+
+  async verifyEmail(code: string): Promise<boolean> {
+    const payload = tokenService.verifyToken(code);
+    const { accountId } = payload;
+    const account = await Account.findByPk(accountId);
+    if (!account) {
+      throw new AccountNotFoundException();
+    }
+    await account.update({ emailVerified: true });
+    return true;
   }
 }
 

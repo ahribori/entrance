@@ -36,7 +36,7 @@ describe('ApplicationService tests', () => {
     try {
       const applicationCreated = await applicationService.createApplication(
         'My Application',
-        3,
+        1000,
         ['a, b, c'],
       );
       expect(applicationCreated.accountId).toEqual(userCreated.id);

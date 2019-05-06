@@ -4,6 +4,7 @@ import config from '../config';
 export enum TokenType {
   ACCESS_TOKEN = 'access_token',
   REFRESH_TOKEN = 'refresh_token',
+  EMAIL_VERIFICATION_TOKEN = 'email_verification_token',
 }
 
 export interface TokenPayload {
@@ -57,6 +58,14 @@ class TokenService {
       expiresIn: '14d',
       issuer: 'entrance',
       subject: TokenType.REFRESH_TOKEN,
+    });
+  }
+
+  issueEmailVerificationToken(payload: TokenPayload) {
+    return jwt.sign(payload, this.secret, {
+      expiresIn: '10m',
+      issuer: 'entrance',
+      subject: TokenType.EMAIL_VERIFICATION_TOKEN,
     });
   }
 

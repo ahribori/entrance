@@ -1,6 +1,7 @@
-import ApplicationService from '../../src/service/ApplicationService';
+import { JsonWebTokenError } from 'jsonwebtoken';
 
 const uniqueString = require('unique-string');
+import ApplicationService from '../../src/service/ApplicationService';
 import db from '../../src/db';
 import AccountService, { AccountType } from '../../src/service/AccountService';
 import AuthService from '../../src/service/AuthService';
@@ -98,7 +99,9 @@ describe('AccountService Tests', () => {
     );
     await linkService.linkAccount(account1.id).toApplication(application1.id);
     await linkService.linkAccount(account2.id).toApplication(application1.id);
-    const accounts = await accountService.findLinkedAccountsByApplicationId(1);
+    const accounts = await accountService.findLinkedAccountsByApplicationId(
+      application1.id,
+    );
     expect(accounts.length).toBeGreaterThan(0);
   });
 
@@ -111,6 +114,25 @@ describe('AccountService Tests', () => {
     if (accountDeleted) {
       expect(accountDeleted.deletedAt).toBeDefined();
       expect(accountDeleted.active).toEqual(false);
+    }
+  });
+
+  test('Email Verification', async () => {
+    const account = await accountService.createAccount(
+      Object.assign({}, getRandomUserInfo(), {
+        email: 'email-verification-test@gmail.com',
+      }),
+    );
+    const emailVerificationCode = await accountService.sendEmailVerificationCode(
+      account.id,
+    );
+    const verified = await accountService.verifyEmail(emailVerificationCode);
+    expect(verified).toBeTruthy();
+
+    try {
+      await accountService.verifyEmail('xxxxx');
+    } catch (e) {
+      expect(e instanceof JsonWebTokenError).toBeTruthy();
     }
   });
 });
