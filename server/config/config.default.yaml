@@ -6,3 +6,9 @@ dataSource:
   url: jdbc:mysql://192.168.0.200/test
   username: test
   password: test!234
+
+nodeMailer:
+  host:
+  port:
+  username:
+  password:

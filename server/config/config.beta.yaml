@@ -6,3 +6,9 @@ dataSource:
   url:
   username:
   password:
+
+nodeMailer:
+  host:
+  port:
+  username:
+  password:
