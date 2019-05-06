@@ -91,10 +91,26 @@ describe('AccountService Tests', () => {
   test('Find accounts by applicationId', async () => {
     const account1 = await accountService.createAccount(getRandomUserInfo());
     const account2 = await accountService.createAccount(getRandomUserInfo());
-    const application1 = await applicationService.createApplication(uniqueString(), account1.id, []);
+    const application1 = await applicationService.createApplication(
+      uniqueString(),
+      account1.id,
+      [],
+    );
     await linkService.linkAccount(account1.id).toApplication(application1.id);
     await linkService.linkAccount(account2.id).toApplication(application1.id);
     const accounts = await accountService.findLinkedAccountsByApplicationId(1);
     expect(accounts.length).toBeGreaterThan(0);
+  });
+
+  test('Destroy Account', async () => {
+    const account = await accountService.createAccount(getRandomUserInfo());
+    const deleted = await accountService.deleteAccount(account.id);
+    expect(deleted).toEqual(1);
+
+    const accountDeleted = await accountService.findAccountById(account.id);
+    if (accountDeleted) {
+      expect(accountDeleted.deletedAt).toBeDefined();
+      expect(accountDeleted.active).toEqual(false);
+    }
   });
 });

@@ -1,3 +1,4 @@
+import db from '../db';
 import Account from '../db/model/Account';
 import AccountNotFoundException from '../exception/account/AccountNotFoundException';
 import PointNotEnoughException from '../exception/account/PointNotEnoughException';
@@ -52,6 +53,22 @@ class AccountService {
         },
       ],
     });
+  }
+
+  async deleteAccount(accountId: number) {
+    const transaction = await db.transaction();
+    const account = await Account.findOne({
+      where: { id: accountId },
+      transaction,
+    });
+    await new Promise((resolve) => setTimeout(() => { resolve() }, 3000))
+    if (account) {
+      account.active = false;
+      await account.save({ transaction });
+    }
+    const result = await Account.destroy({ where: { id: accountId }, transaction });
+    await transaction.commit();
+    return result;
   }
 
   async increaseExp(accountId: number, amount: number) {
