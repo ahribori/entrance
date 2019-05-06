@@ -61,7 +61,6 @@ class AccountService {
       where: { id: accountId },
       transaction,
     });
-    await new Promise((resolve) => setTimeout(() => { resolve() }, 3000))
     if (account) {
       account.active = false;
       await account.save({ transaction });
