@@ -1,6 +1,7 @@
 import db from '../../src/db';
 import AuthService from '../../src/service/AuthService';
 import TokenService from '../../src/service/TokenService';
+import { JsonWebTokenError } from 'jsonwebtoken';
 
 beforeAll(async () => {
   await db.authenticate();
@@ -35,5 +36,25 @@ describe('AuthService Tests', () => {
     const { accessToken } = authBag;
     const verifiedPayload = tokenService.verifyToken(accessToken);
     expect(verifiedPayload.accountId).toEqual(accountId);
+  });
+
+  test('Email Verification', async () => {
+    const account = await authService.signUp(
+      'email-verification',
+      '이메일 테스트',
+      '123456',
+      'entrance.auth@gmail.com',
+    );
+    const emailVerificationCode = await authService.sendEmailVerificationCode(
+      account.id,
+    );
+    const verified = await authService.verifyEmail(emailVerificationCode);
+    expect(verified).toBeTruthy();
+
+    try {
+      await authService.verifyEmail('xxxxx');
+    } catch (e) {
+      expect(e instanceof JsonWebTokenError).toBeTruthy();
+    }
   });
 });

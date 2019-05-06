@@ -117,22 +117,4 @@ describe('AccountService Tests', () => {
     }
   });
 
-  test('Email Verification', async () => {
-    const account = await accountService.createAccount(
-      Object.assign({}, getRandomUserInfo(), {
-        email: 'email-verification-test@gmail.com',
-      }),
-    );
-    const emailVerificationCode = await accountService.sendEmailVerificationCode(
-      account.id,
-    );
-    const verified = await accountService.verifyEmail(emailVerificationCode);
-    expect(verified).toBeTruthy();
-
-    try {
-      await accountService.verifyEmail('xxxxx');
-    } catch (e) {
-      expect(e instanceof JsonWebTokenError).toBeTruthy();
-    }
-  });
 });

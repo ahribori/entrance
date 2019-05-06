@@ -1,6 +1,13 @@
 import * as crypto from 'crypto';
 import TokenService from './TokenService';
 import AccountService, { AccountType } from './AccountService';
+import MailService from './MailService';
+import Account from '../db/model/Account';
+import AccountNotFoundException from '../exception/account/AccountNotFoundException';
+import EmailAlreadyVerifiedException from '../exception/auth/EmailAlreadyVerifiedException';
+
+const tokenService = TokenService.getInstance();
+const mailService = MailService.getInstance();
 
 interface AuthBag {
   accessToken: string;
@@ -116,6 +123,42 @@ class AuthService {
     } catch (e) {
       throw e;
     }
+  }
+
+  async sendEmailVerificationCode(accountId: number): Promise<string> {
+    const account = await Account.findByPk(accountId);
+    if (!account) {
+      throw new AccountNotFoundException();
+    }
+    const verificationToken = tokenService.issueEmailVerificationToken({
+      accountId,
+    });
+
+    await mailService.sendMail({
+      to: account.email,
+      from: 'entrance <entrance.auth@gmail.com>',
+      subject: '이메일 인증',
+      html: `<form action="http://ahribori.com:8080/api/v1/auth/email-verification" method="post">${verificationToken}
+            <input type="hidden" name="verifyToken" value="${verificationToken}" />
+           <button type="submit">눌러</button>
+        </form>`,
+    });
+
+    return verificationToken;
+  }
+
+  async verifyEmail(code: string): Promise<boolean> {
+    const payload = tokenService.verifyToken(code);
+    const { accountId } = payload;
+    const account = await Account.findByPk(accountId);
+    if (!account) {
+      throw new AccountNotFoundException();
+    }
+    if (account.emailVerified) {
+      throw new EmailAlreadyVerifiedException();
+    }
+    await account.update({ emailVerified: true });
+    return true;
   }
 }
 
