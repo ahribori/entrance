@@ -10,6 +10,12 @@ export interface Configuration {
     username: string;
     password: string;
   };
+  nodeMailer: {
+    host: string;
+    port: number;
+    username: string;
+    password: string;
+  }
 }
 
 export enum RuntimeProfile {
