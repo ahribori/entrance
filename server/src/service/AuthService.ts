@@ -1,10 +1,10 @@
 import * as crypto from 'crypto';
-import TokenService from './TokenService';
-import AccountService, { AccountType } from './AccountService';
-import MailService from './MailService';
-import Account from '../db/model/Account';
-import AccountNotFoundException from '../exception/account/AccountNotFoundException';
-import EmailAlreadyVerifiedException from '../exception/auth/EmailAlreadyVerifiedException';
+import TokenService from 'service/TokenService';
+import MailService from 'service/MailService';
+import AccountService, { AccountType } from 'service/AccountService';
+import Account from 'db/model/Account';
+import AccountNotFoundException from 'exception/account/AccountNotFoundException';
+import EmailAlreadyVerifiedException from 'exception/auth/EmailAlreadyVerifiedException';
 
 const tokenService = TokenService.getInstance();
 const mailService = MailService.getInstance();

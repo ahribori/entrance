@@ -1,12 +1,10 @@
-import { JsonWebTokenError } from 'jsonwebtoken';
-
 const uniqueString = require('unique-string');
-import ApplicationService from '../../src/service/ApplicationService';
-import db from '../../src/db';
-import AccountService, { AccountType } from '../../src/service/AccountService';
-import AuthService from '../../src/service/AuthService';
-import PointNotEnoughException from '../../src/exception/account/PointNotEnoughException';
-import LinkService from '../../src/service/LinkService';
+import ApplicationService from 'service/ApplicationService';
+import db from 'db';
+import AccountService, { AccountType } from 'service/AccountService';
+import AuthService from 'service/AuthService';
+import PointNotEnoughException from 'exception/account/PointNotEnoughException';
+import LinkService from 'service/LinkService';
 
 const accountService = AccountService.getInstance();
 const applicationService = ApplicationService.getInstance();

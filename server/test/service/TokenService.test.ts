@@ -1,4 +1,4 @@
-import TokenService, { TokenType } from '../../src/service/TokenService';
+import TokenService, { TokenType } from 'service/TokenService';
 import { JsonWebTokenError } from 'jsonwebtoken';
 
 describe('TokenService Tests', () => {

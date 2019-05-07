@@ -1,8 +1,8 @@
-import db from '../../src/db';
-import AccountService, { AccountType } from '../../src/service/AccountService';
-import AuthService from '../../src/service/AuthService';
-import ApplicationService from '../../src/service/ApplicationService';
-import AccountNotFoundException from '../../src/exception/account/AccountNotFoundException';
+import db from 'db';
+import AuthService from 'service/AuthService';
+import AccountService, { AccountType } from 'service/AccountService';
+import AccountNotFoundException from 'exception/account/AccountNotFoundException';
+import ApplicationService from 'service/ApplicationService';
 
 beforeAll(async () => {
   await db.authenticate();

@@ -1,7 +1,7 @@
-import db from '../../src/db';
-import AuthService from '../../src/service/AuthService';
-import TokenService from '../../src/service/TokenService';
 import { JsonWebTokenError } from 'jsonwebtoken';
+import AuthService from 'service/AuthService';
+import db from 'db';
+import TokenService from 'service/TokenService';
 
 beforeAll(async () => {
   await db.authenticate();
