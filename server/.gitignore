@@ -2,5 +2,5 @@ log
 node_modules
 .idea
 *.map
-*.js
+src/*.js
 config.override.yaml
