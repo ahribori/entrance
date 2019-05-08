@@ -1,3 +1,5 @@
+import Role from 'db/model/Role';
+
 const uniqueString = require('unique-string');
 import ApplicationService from 'service/ApplicationService';
 import db from 'db';
@@ -33,7 +35,11 @@ beforeAll(async () => {
 
 describe('AccountService Tests', () => {
   test('Create User', async () => {
-    const userCreated = await accountService.createAccount(getRandomUserInfo());
+    const userCreated = await accountService.createAccount(
+      Object.assign({}, getRandomUserInfo(), {
+        roles: [{ role: 'ADMIN' }, { role: 'USER' }],
+      }),
+    );
     await expect(userCreated).toBeDefined();
   });
 
@@ -114,5 +120,4 @@ describe('AccountService Tests', () => {
       expect(accountDeleted.active).toEqual(false);
     }
   });
-
 });

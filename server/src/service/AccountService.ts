@@ -3,6 +3,7 @@ import Account from 'db/model/Account';
 import AccountNotFoundException from 'exception/account/AccountNotFoundException';
 import PointNotEnoughException from 'exception/account/PointNotEnoughException';
 import Application from 'db/model/Application';
+import Role from 'db/model/Role';
 
 export enum AccountType {
   LOCAL = 'LOCAL',
@@ -19,6 +20,7 @@ interface CreateAccountParams {
   password?: string;
   email: string;
   salt: string;
+  role: Role[];
 }
 
 class AccountService {
@@ -34,7 +36,7 @@ class AccountService {
   }
 
   async createAccount(account: CreateAccountParams) {
-    return Account.create(account);
+    return Account.create(account, { include: [Role] });
   }
 
   async findAccountById(accountId: number) {
@@ -100,7 +102,6 @@ class AccountService {
     }
     return account.update({ point: decreasedPoint });
   }
-
 }
 
 export default AccountService;
