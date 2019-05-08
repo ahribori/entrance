@@ -1,9 +1,9 @@
-import db from 'db';
-import Account from 'db/model/Account';
-import AccountNotFoundException from 'exception/account/AccountNotFoundException';
-import PointNotEnoughException from 'exception/account/PointNotEnoughException';
-import Application from 'db/model/Application';
-import Role, { RoleType } from 'db/model/Role';
+import Role, { RoleType } from '../db/model/Role';
+import Account from '../db/model/Account';
+import Application from '../db/model/Application';
+import PointNotEnoughException from '../exception/account/PointNotEnoughException';
+import AccountNotFoundException from '../exception/account/AccountNotFoundException';
+import db from '../db';
 
 export enum AccountType {
   LOCAL = 'LOCAL',

@@ -1,8 +1,8 @@
-import AuthService from 'service/AuthService';
-import LinkService from 'service/LinkService';
-import AccountService, { AccountType } from 'service/AccountService';
-import db from 'db';
-import ApplicationService from 'service/ApplicationService';
+import AuthService from '../../src/service/AuthService';
+import LinkService from '../../src/service/LinkService';
+import AccountService, { AccountType } from '../../src/service/AccountService';
+import db from '../../src/db';
+import ApplicationService from '../../src/service/ApplicationService';
 
 const linkService = LinkService.getInstance();
 const accountService = AccountService.getInstance();

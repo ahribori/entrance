@@ -1,5 +1,5 @@
 import * as jwt from 'jsonwebtoken';
-import config from 'config';
+import config from '../config';
 
 export enum TokenType {
   ACCESS_TOKEN = 'access_token',

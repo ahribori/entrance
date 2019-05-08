@@ -1,5 +1,5 @@
 import * as nodemailer from 'nodemailer';
-import config from 'config';
+import config from '../config';
 
 const transportOptions = config.nodeMailer;
 

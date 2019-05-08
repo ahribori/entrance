@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import HttpException from 'exception/common/HttpException';
+import HttpException from '../exception/common/HttpException';
 
 export const errorHandler = (
   err: Error,

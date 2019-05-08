@@ -1,5 +1,5 @@
-import TokenService, { TokenType } from 'service/TokenService';
 import { JsonWebTokenError } from 'jsonwebtoken';
+import TokenService, { TokenType } from '../../src/service/TokenService';
 
 describe('TokenService Tests', () => {
   const authorizationService = TokenService.getInstance();

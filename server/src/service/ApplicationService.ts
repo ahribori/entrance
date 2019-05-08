@@ -1,7 +1,7 @@
 import uniqueString = require('unique-string');
-import Application from 'db/model/Application';
-import AccountNotFoundException from 'exception/account/AccountNotFoundException';
-import AccountService from 'service/AccountService';
+import AccountService from './AccountService';
+import AccountNotFoundException from '../exception/account/AccountNotFoundException';
+import Application from '../db/model/Application';
 
 class ApplicationService {
   private static instance: ApplicationService;

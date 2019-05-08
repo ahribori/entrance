@@ -1,4 +1,4 @@
-import MailService from 'service/MailService';
+import MailService from '../../src/service/MailService';
 
 describe('MailService tests', () => {
   const mailService = MailService.getInstance();

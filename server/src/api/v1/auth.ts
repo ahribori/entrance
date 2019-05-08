@@ -1,9 +1,9 @@
 import * as express from 'express';
-import HttpException from 'exception/common/HttpException';
-import asyncRouter from 'middleware/async-router';
-import EmailAlreadyVerifiedException from 'exception/auth/EmailAlreadyVerifiedException';
+import EmailAlreadyVerifiedException from '../../exception/auth/EmailAlreadyVerifiedException';
 import { TokenExpiredError } from 'jsonwebtoken';
-import AuthService from 'service/AuthService';
+import AuthService from '../../service/AuthService';
+import HttpException from '../../exception/common/HttpException';
+import asyncRouter from '../../middleware/async-router';
 
 const router = express.Router();
 

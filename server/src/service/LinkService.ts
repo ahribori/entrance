@@ -1,5 +1,5 @@
 import uniqueString = require('unique-string');
-import Link from 'db/model/Link';
+import Link from '../db/model/Link';
 
 class LinkService {
   private static instance: LinkService;

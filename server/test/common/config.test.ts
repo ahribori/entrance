@@ -1,5 +1,5 @@
-import config from 'config';
-import logger from 'logger';
+import config from '../../src/config';
+import logger from '../../src/logger';
 
 describe('Configuration tests', () => {
   test('Runtime profile test', () => {

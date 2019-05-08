@@ -1,6 +1,6 @@
 import * as express from 'express';
 import * as requestIp from 'request-ip';
-import v1 from 'api/v1';
+import v1 from './v1';
 
 const router = express.Router();
 
