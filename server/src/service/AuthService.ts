@@ -5,6 +5,7 @@ import AccountService, { AccountType } from 'service/AccountService';
 import Account from 'db/model/Account';
 import AccountNotFoundException from 'exception/account/AccountNotFoundException';
 import EmailAlreadyVerifiedException from 'exception/auth/EmailAlreadyVerifiedException';
+import { RoleType } from 'db/model/Role';
 
 const tokenService = TokenService.getInstance();
 const mailService = MailService.getInstance();
@@ -50,6 +51,7 @@ class AuthService {
       email,
       nickname,
       salt,
+      role: [RoleType.USER]
     });
   }
 

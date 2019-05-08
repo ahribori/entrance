@@ -3,7 +3,7 @@ import Account from 'db/model/Account';
 import AccountNotFoundException from 'exception/account/AccountNotFoundException';
 import PointNotEnoughException from 'exception/account/PointNotEnoughException';
 import Application from 'db/model/Application';
-import Role from 'db/model/Role';
+import Role, { RoleType } from 'db/model/Role';
 
 export enum AccountType {
   LOCAL = 'LOCAL',
@@ -20,7 +20,7 @@ interface CreateAccountParams {
   password?: string;
   email: string;
   salt: string;
-  role: Role[];
+  role: RoleType[];
 }
 
 class AccountService {

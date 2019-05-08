@@ -22,6 +22,7 @@ describe('ApplicationService tests', () => {
       password: await authService.createPasswordHash('123456', salt),
       accountType: AccountType.LOCAL,
       salt,
+      role: [],
     });
 
     try {

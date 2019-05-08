@@ -4,7 +4,11 @@
     "target": "es6",
     "outDir": "./dist",
     "sourceMap": true,
-    "baseUrl": "src",
+    "sourceRoot": "src",
+    "baseUrl":"src",
+    "paths": {
+      "*": ["*"]
+    },
     "typeRoots": [
       "./node_modules/@types",
       "./src/types/"
@@ -15,6 +19,6 @@
     "emitDecoratorMetadata": true
   },
   "include": [
-    "./**/*"
+    "./src/**/*"
   ]
 }

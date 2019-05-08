@@ -22,6 +22,7 @@ beforeAll(async () => {
     password: await authService.createPasswordHash('123456', salt),
     accountType: AccountType.LOCAL,
     salt,
+    role: [],
   });
   const applicationCreated = await applicationService.createApplication(
     '테스트 어플리케이션',
