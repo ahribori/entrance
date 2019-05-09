@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import * as queryString from 'query-string';
+import styles from '../styles/index.module.scss';
 
 class Login extends Component<any, any> {
   state = {
@@ -7,7 +8,11 @@ class Login extends Component<any, any> {
   };
 
   render() {
-    return <div>로그인</div>;
+    return (<div className={styles.login_container}>
+      <div className={styles.login_body}>
+
+      </div>
+    </div>);
   }
 
   componentDidMount(): void {
