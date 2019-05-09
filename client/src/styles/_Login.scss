@@ -1,11 +1,85 @@
-@import "lib/responsive";
-@import "lib/color";
+@import 'lib/responsive';
+@import 'lib/color';
 
-.login_container {
-  border: 1px solid red;
-  .login_body {
-    border: 1px solid blue;
-    margin: 0 auto;
-    width: 500px;
+.login_section {
+  min-width: 380px;
+
+  @include responsive(large) {
+    padding-top: 150px;
   }
+  @include responsive(medium) {
+    padding-top: 100px;
+  }
+  @include responsive(small) {
+    padding-top: 50px;
+  }
+  a {
+    color: $cyan500;
+    text-decoration: none;
+  }
+
+  .text {
+    font-size: 0.9rem;
+  }
+
+  .password_renew_message {
+    padding-top: 8px;
+    text-align: right;
+  }
+
+  .sign_up_message {
+    padding-top: 16px;
+    text-align: center;
+  }
+}
+
+.login_body {
+  margin: 0 auto;
+  width: 340px;
+}
+
+.login_logo {
+  max-height: 50px;
+  text-align: center;
+  img {
+    max-height: 50px;
+  }
+}
+
+.login_copy_text {
+  margin: 2rem 0;
+  font-size: 18px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.login_input {
+  height: 36px;
+  width: 100%;
+  border-radius: 3px;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 1.4rem 0.7rem;
+  border: 1px solid #ced0da;
+  outline: none;
+}
+
+.login_email {
+}
+
+.login_password {
+  margin-top: 20px;
+}
+
+.login_button {
+  margin-top: 36px;
+  width: 100%;
+  border-radius: 3px;
+  height: 46px;
+  background-color: $cyan500;
+  border: none;
+  color: $white;
+  font-size: 1rem;
+  cursor: pointer;
+  outline: none;
 }
