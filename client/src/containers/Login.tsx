@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
 import queryString from 'query-string';
-import classNames from 'classnames';
 import styles from '../styles/index.module.scss';
 import { Divider } from 'antd';
+import LoginForm, { LoginFormValue } from '../components/LoginForm';
 
 class Login extends Component<any, any> {
   state = {
     ...queryString.parse(window.location.search),
+  };
+
+  handleSubmit = (values: LoginFormValue) => {
+    console.log(values);
   };
 
   render() {
@@ -24,39 +28,11 @@ class Login extends Component<any, any> {
           <div className={styles.login_copy_text}>
             하나의 아이디로 모든 서비스를 이용하세요.
           </div>
-          <Divider>또는</Divider>
-          <form>
-            <input
-              type="text"
-              placeholder="이메일"
-              className={styles.login_input}
-            />
-            <input
-              type="password"
-              placeholder="비밀번호"
-              className={classNames(styles.login_input, styles.login_password)}
-            />
-            <div className={styles.password_renew_message}>
-              <span className={styles.text}>
-                <a href="#none">비밀번호 재설정</a>
-              </span>
-            </div>
-            <button type="button" className={styles.login_button}>
-              로그인
-            </button>
-          </form>
-          <div className={styles.sign_up_message}>
-            <span className={styles.text}>
-              계정이 없으신가요? <a href="#none">회원가입</a>
-            </span>
-          </div>
+          <Divider className={styles.login_divider}>또는</Divider>
+          <LoginForm onSubmit={this.handleSubmit} />
         </div>
       </section>
     );
-  }
-
-  componentDidMount(): void {
-    console.log(this.state);
   }
 }
 
