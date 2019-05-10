@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import queryString from 'query-string';
 import classNames from 'classnames';
 import styles from '../styles/index.module.scss';
+import { Divider } from 'antd';
 
 class Login extends Component<any, any> {
   state = {
@@ -23,6 +24,7 @@ class Login extends Component<any, any> {
           <div className={styles.login_copy_text}>
             하나의 아이디로 모든 서비스를 이용하세요.
           </div>
+          <Divider>또는</Divider>
           <form>
             <input
               type="text"
