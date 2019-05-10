@@ -1,5 +1,4 @@
-@import 'lib/responsive';
-@import 'lib/color';
+@import '../styles/lib';
 
 .login_section {
   min-width: 380px;
@@ -40,11 +39,6 @@
     font-size: 18px;
     text-align: center;
     font-weight: 500;
-  }
-
-  .sign_up_message {
-    padding-top: 8px;
-    text-align: center;
   }
 
   .login_divider {

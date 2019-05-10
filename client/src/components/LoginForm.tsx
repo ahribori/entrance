@@ -1,7 +1,7 @@
 import React, { FormEvent, SyntheticEvent } from 'react';
 import { Button, Form, Icon, Input } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
-import styles from '../styles/index.module.scss';
+import styles from './LoginForm.module.scss';
 
 export interface LoginFormValue {
   email: string;

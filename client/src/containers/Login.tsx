@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import queryString from 'query-string';
-import styles from '../styles/index.module.scss';
+import styles from './Login.module.scss';
 import { Divider } from 'antd';
 import LoginForm, { LoginFormValue } from '../components/LoginForm';
 
