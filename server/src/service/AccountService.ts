@@ -44,6 +44,10 @@ class AccountService {
     return Account.findByPk(accountId);
   }
 
+  async findAccountByEmail(email: string) {
+    return Account.findOne({ where: { email } });
+  }
+
   async findLinkedAccountsByApplicationId(applicationId: number) {
     return Account.findAll({
       include: [

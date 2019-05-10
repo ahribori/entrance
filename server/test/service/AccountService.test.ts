@@ -107,6 +107,19 @@ describe('AccountService Tests', () => {
     expect(accounts.length).toBeGreaterThan(0);
   });
 
+  test('Find account by email', async () => {
+    const accountCreated = await accountService.createAccount(
+      getRandomUserInfo(),
+    );
+    const account = await accountService.findAccountByEmail(
+      accountCreated.email,
+    );
+    await expect(account).toBeDefined();
+    if (account) {
+      expect(account.id).toEqual(accountCreated.id);
+    }
+  });
+
   test('Destroy Account', async () => {
     const account = await accountService.createAccount(getRandomUserInfo());
     const deleted = await accountService.deleteAccount(account.id);
