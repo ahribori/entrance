@@ -13,7 +13,21 @@ import Application from './Application';
 import Link from './Link';
 import Role from './Role';
 
-@Table({ tableName: 'account', paranoid: true, underscored: true })
+@Table({
+  tableName: 'account',
+  paranoid: true,
+  underscored: true,
+  indexes: [
+    {
+      unique: true,
+      fields: ['username'],
+    },
+    {
+      unique: true,
+      fields: ['email'],
+    },
+  ],
+})
 class Account extends Model<Account> {
   @Comment('계정 타입')
   @AllowNull(false)
