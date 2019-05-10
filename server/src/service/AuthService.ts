@@ -6,6 +6,7 @@ import { RoleType } from '../db/model/Role';
 import AccountService, { AccountType } from './AccountService';
 import AccountNotFoundException from '../exception/account/AccountNotFoundException';
 import TokenService from './TokenService';
+import PasswordNotMatchedException from '../exception/auth/PasswordNotMatchedException';
 
 const tokenService = TokenService.getInstance();
 const mailService = MailService.getInstance();
@@ -51,7 +52,7 @@ class AuthService {
       email,
       nickname,
       salt,
-      role: [RoleType.USER]
+      role: [RoleType.USER],
     });
   }
 
@@ -83,7 +84,17 @@ class AuthService {
    * @param username
    * @param password
    */
-  async login(username: string, password: string) {}
+  async login(username: string, password: string) {
+    const account = await Account.findOne({ where: { username } });
+    if (!account) {
+      throw new AccountNotFoundException();
+    }
+    const passwordHash = await this.createPasswordHash(password, account.salt);
+    if (passwordHash !== account.password) {
+      throw new PasswordNotMatchedException();
+    }
+    return this.authorize(account.id);
+  }
 
   /**
    * 써드파티 로그인

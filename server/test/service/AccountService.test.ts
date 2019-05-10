@@ -118,4 +118,30 @@ describe('AccountService Tests', () => {
       expect(accountDeleted.active).toEqual(false);
     }
   });
+
+  test('Change password', async () => {
+    const password = 'xxxxxx';
+    const newPassword = 'zzzzzz';
+
+    const account = await authService.signUp(
+      'daniel',
+      '다니엘',
+      password,
+      'my-email@gmail.com',
+    );
+
+    const passwordChangedAccount = await accountService.changePassword(
+      account.email,
+      newPassword,
+    );
+    try {
+      const authBag = await authService.login(
+        passwordChangedAccount.username,
+        newPassword,
+      );
+      await expect(authBag).toBeDefined();
+    } catch (e) {
+      expect(e).toBeUndefined();
+    }
+  });
 });

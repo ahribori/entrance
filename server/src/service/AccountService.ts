@@ -4,6 +4,7 @@ import Application from '../db/model/Application';
 import PointNotEnoughException from '../exception/account/PointNotEnoughException';
 import AccountNotFoundException from '../exception/account/AccountNotFoundException';
 import db from '../db';
+import AuthService from './AuthService';
 
 export enum AccountType {
   LOCAL = 'LOCAL',
@@ -73,6 +74,22 @@ class AccountService {
     });
     await transaction.commit();
     return result;
+  }
+
+  async changePassword(email: string, newPassword: string) {
+    const authService = AuthService.getInstance();
+    const account = await Account.findOne({ where: { email } });
+    if (!account) {
+      throw new AccountNotFoundException();
+    }
+    const salt = authService.createSalt();
+    const newPasswordHash = await authService.createPasswordHash(
+      newPassword,
+      salt,
+    );
+    account.salt = salt;
+    account.password = newPasswordHash;
+    return account.save();
   }
 
   async increaseExp(accountId: number, amount: number) {
