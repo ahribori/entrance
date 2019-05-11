@@ -3,6 +3,7 @@ import queryString from 'query-string';
 import styles from './Login.module.scss';
 import { Divider } from 'antd';
 import LoginForm, { LoginFormValue } from '../components/LoginForm';
+import SocialLogin from '../components/SocialLogin';
 
 class Login extends Component<any, any> {
   state = {
@@ -28,6 +29,7 @@ class Login extends Component<any, any> {
           <div className={styles.login_copy_text}>
             하나의 아이디로 모든 서비스를 이용하세요.
           </div>
+          <SocialLogin />
           <Divider className={styles.login_divider}>또는</Divider>
           <LoginForm onSubmit={this.handleSubmit} />
         </div>
