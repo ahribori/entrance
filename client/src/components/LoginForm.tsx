@@ -2,6 +2,7 @@ import React, { FormEvent, SyntheticEvent } from 'react';
 import { Button, Form, Icon, Input } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import styles from './LoginForm.module.scss';
+import { Link } from 'react-router-dom';
 
 export interface LoginFormValue {
   email: string;
@@ -65,7 +66,7 @@ const LoginForm: React.FunctionComponent<IProps> = ({ form, onSubmit }) => {
           로그인
         </Button>
         <div className={styles.sign_up_message}>
-          계정이 없으신가요? <a href="#none">회원가입</a>
+          계정이 없으신가요? <Link to="/signup">회원가입</Link>
         </div>
       </Form.Item>
     </Form>

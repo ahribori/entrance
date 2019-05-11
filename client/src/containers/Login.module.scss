@@ -1,50 +1,8 @@
 @import '../styles/lib';
 
-.login_section {
-  min-width: 380px;
-
-  @include responsive(large) {
-    padding-top: 150px;
-  }
-  @include responsive(medium) {
-    padding-top: 100px;
-  }
-  @include responsive(small) {
-    padding-top: 50px;
-  }
-
-  .text {
-    font-size: 0.9rem;
-  }
-
-  .password_renew_message {
-    padding-top: 8px;
-    text-align: right;
-  }
-
-  .login_body {
-    margin: 0 auto;
-    width: 340px;
-  }
-
-  .login_logo {
-    max-height: 50px;
-    text-align: center;
-    img {
-      max-height: 50px;
-    }
-  }
-  .login_copy_text {
-    margin: 2rem 0;
-    font-size: 18px;
-    text-align: center;
-    font-weight: 500;
-  }
-
-  .login_divider {
-    span {
-      font-size: 13px;
-      color: $grey500;
-    }
+.divider {
+  span {
+    font-size: 13px;
+    color: $grey500;
   }
 }
