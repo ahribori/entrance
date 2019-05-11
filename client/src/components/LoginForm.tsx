@@ -62,6 +62,7 @@ const LoginForm: React.FunctionComponent<IProps> = ({ form, onSubmit }) => {
           size="large"
           block
           style={{ height: 46 }}
+          icon="unlock"
         >
           로그인
         </Button>

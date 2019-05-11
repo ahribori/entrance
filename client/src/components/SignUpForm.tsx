@@ -126,6 +126,7 @@ const SignUpForm: React.FunctionComponent<IProps> = ({ form, onSubmit }) => {
           size="large"
           block
           style={{ height: 46 }}
+          icon="form"
         >
           계정 만들기
         </Button>
