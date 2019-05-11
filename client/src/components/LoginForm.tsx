@@ -47,7 +47,7 @@ const LoginForm: React.FunctionComponent<IProps> = ({ form, onSubmit }) => {
           <Input.Password
             prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
             type="password"
-            placeholder="패스워드"
+            placeholder="비밀번호"
             size="large"
             autoComplete="password"
             style={{ height: 46 }}
@@ -66,7 +66,7 @@ const LoginForm: React.FunctionComponent<IProps> = ({ form, onSubmit }) => {
           로그인
         </Button>
         <div className={styles.sign_up_message}>
-          계정이 없으신가요? <Link to="/signup">회원가입</Link>
+          계정이 없으신가요? <Link to="/signup">계정 만들기</Link>
         </div>
       </Form.Item>
     </Form>
