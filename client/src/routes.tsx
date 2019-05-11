@@ -11,10 +11,12 @@ const loadDynamic = (dynamicImport: Promise<any>) =>
   });
 
 const Login = loadDynamic(import('./containers/Login'));
+const SignUp = loadDynamic(import('./containers/SignUp'));
 
 // @ts-ignore
 export default (
   <Switch>
     <Route exact path="/" component={Login} />
+    <Route exact path="/signup" component={SignUp} />
   </Switch>
 );
