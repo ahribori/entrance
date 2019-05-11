@@ -111,14 +111,24 @@ const SignUpForm: React.FunctionComponent<IProps> = ({ form, onSubmit }) => {
       <Form.Item>
         {getFieldDecorator('service-policy', {
           valuePropName: 'checked',
-          initialValue: true,
+          initialValue: false,
+          rules: [
+            {
+              validator: (rule, value, callback) => {
+                if (!value) {
+                  callback('서비스 약관에 동의해야 합니다.');
+                }
+                callback();
+              },
+            },
+          ],
         })(
           <Checkbox>
             <a href="#none">서비스 약관</a>에 동의합니다.
           </Checkbox>,
         )}
       </Form.Item>
-      <Form.Item>
+      <Form.Item style={{ paddingTop: 8 }}>
         <Button
           type="primary"
           htmlType="submit"
