@@ -18,7 +18,7 @@ class Login extends Component<any, any> {
   render() {
     return (
       <CenterLayout>
-        <SocialLogin label={'다른 서비스로 로그인'} />
+        <SocialLogin />
         <Divider className={styles.divider}>또는</Divider>
         <LoginForm onSubmit={this.handleSubmit} />
       </CenterLayout>

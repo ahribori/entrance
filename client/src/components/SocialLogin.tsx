@@ -8,14 +8,12 @@ import googleLogo from '../assets/google_logo.png';
 
 const { Text } = Typography;
 
-interface IProps {
-  label: string;
-}
+interface IProps {}
 
-const SocialLogin: React.FunctionComponent<IProps> = ({ label }) => {
+const SocialLogin: React.FunctionComponent<IProps> = () => {
   return (
     <div className={styles.center}>
-      <Text type={'secondary'}>{label}</Text>
+      <Text type={'secondary'}>다른 서비스로 시작하기</Text>
       <Row type="flex" justify="center" style={{ marginTop: 20 }}>
         <Col span={5}>
           <a href="">

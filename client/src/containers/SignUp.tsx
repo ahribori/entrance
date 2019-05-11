@@ -13,7 +13,7 @@ class SignUp extends Component {
   render() {
     return (
       <CenterLayout>
-        <SocialLogin label={'다른 서비스로 계정 만들기'} />
+        <SocialLogin />
         <Divider className={styles.divider}>또는</Divider>
         <SignUpForm onSubmit={this.handleSubmit} />
       </CenterLayout>
