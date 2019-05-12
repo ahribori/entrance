@@ -127,6 +127,8 @@ const SignUpForm: React.FunctionComponent<IProps> = ({ form, onSubmit }) => {
             <a href="#none">서비스 약관</a>에 동의합니다.
           </Checkbox>,
         )}
+      </Form.Item>
+      <Form.Item>
         <Button
           type="primary"
           htmlType="submit"
