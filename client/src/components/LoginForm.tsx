@@ -1,5 +1,5 @@
 import React, { FormEvent, SyntheticEvent } from 'react';
-import { Button, Form, Icon, Input } from 'antd';
+import { Button, Checkbox, Divider, Form, Icon, Input } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import styles from './LoginForm.module.scss';
 import { Link } from 'react-router-dom';
@@ -33,7 +33,7 @@ const LoginForm: React.FunctionComponent<IProps> = ({ form, onSubmit }) => {
         })(
           <Input
             prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-            placeholder="이메일"
+            placeholder="아이디(이메일)"
             size="large"
             autoComplete="email"
             style={{ height: 46 }}
@@ -55,10 +55,19 @@ const LoginForm: React.FunctionComponent<IProps> = ({ form, onSubmit }) => {
         )}
       </Form.Item>
       <Form.Item>
+        {getFieldDecorator('remember', {
+          valuePropName: 'checked',
+          initialValue: false,
+        })(<Checkbox>아이디 저장</Checkbox>)}
+        <span className={styles.right}>
+          <Link to="">계정 찾기</Link>
+          <Divider type={'vertical'} />
+          <Link to="">비밀번호 찾기</Link>
+        </span>
         <Button
           type="primary"
           htmlType="submit"
-          className="login-form-button"
+          className={styles.login_button}
           size="large"
           block
           style={{ height: 46 }}

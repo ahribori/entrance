@@ -39,7 +39,7 @@ const SignUpForm: React.FunctionComponent<IProps> = ({ form, onSubmit }) => {
         })(
           <Input
             prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-            placeholder="이메일"
+            placeholder="아이디(이메일)"
             size="large"
             autoComplete="email"
             style={{ height: 46 }}
@@ -127,12 +127,10 @@ const SignUpForm: React.FunctionComponent<IProps> = ({ form, onSubmit }) => {
             <a href="#none">서비스 약관</a>에 동의합니다.
           </Checkbox>,
         )}
-      </Form.Item>
-      <Form.Item style={{ paddingTop: 8 }}>
         <Button
           type="primary"
           htmlType="submit"
-          className="sign-up-form-button"
+          className={styles.sign_up_button}
           size="large"
           block
           style={{ height: 46 }}
