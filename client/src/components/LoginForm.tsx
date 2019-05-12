@@ -1,5 +1,5 @@
 import React, { FormEvent, SyntheticEvent } from 'react';
-import { Button, Checkbox, Divider, Form, Icon, Input } from 'antd';
+import { Button, Checkbox, Form, Icon, Input } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import styles from './LoginForm.module.scss';
 import { Link } from 'react-router-dom';
@@ -59,11 +59,9 @@ const LoginForm: React.FunctionComponent<IProps> = ({ form, onSubmit }) => {
           valuePropName: 'checked',
           initialValue: false,
         })(<Checkbox>아이디 저장</Checkbox>)}
-        <span className={styles.right}>
-          <Link to="">계정 찾기</Link>
-          <Divider type={'vertical'} />
-          <Link to="">비밀번호 찾기</Link>
-        </span>
+        <Link to="/password-reset" className={styles.right}>
+          비밀번호 재설정
+        </Link>
         <Button
           type="primary"
           htmlType="submit"
