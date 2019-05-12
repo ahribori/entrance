@@ -4,6 +4,7 @@ import { TokenExpiredError } from 'jsonwebtoken';
 import AuthService from '../../service/AuthService';
 import HttpException from '../../exception/common/HttpException';
 import asyncRouter from '../../middleware/async-router';
+import * as svgCaptcha from 'svg-captcha';
 
 const router = express.Router();
 
@@ -13,6 +14,15 @@ router.get(
   '/',
   asyncRouter(async (req, res) => {
     return res.json('hello, world!');
+  }),
+);
+
+router.get(
+  '/captcha',
+  asyncRouter(async (req, res) => {
+    const captcha = svgCaptcha.create({ noise: 2 });
+    res.type('svg');
+    res.send(captcha.data);
   }),
 );
 
