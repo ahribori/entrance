@@ -11,6 +11,7 @@
     "@types/react-loadable": "^5.5.1",
     "@types/react-router-dom": "^4.3.3",
     "antd": "^3.17.0",
+    "axios": "^0.18.0",
     "babel-plugin-import": "^1.11.0",
     "classnames": "^2.2.6",
     "customize-cra": "^0.2.12",
@@ -48,6 +49,7 @@
     ]
   },
   "devDependencies": {
+    "@types/axios": "^0.14.0",
     "prettier": "^1.17.0"
   },
   "proxy": "http://localhost:8080"
