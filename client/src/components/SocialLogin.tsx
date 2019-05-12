@@ -16,23 +16,39 @@ const SocialLogin: React.FunctionComponent<IProps> = () => {
       <Text type={'secondary'}>다른 서비스로 시작하기</Text>
       <Row type="flex" justify="center" style={{ marginTop: 20 }}>
         <Col span={5}>
-          <a href="">
-            <img src={naverLogo} alt="" className={styles.logo} />
+          <a href="/">
+            <img
+              src={naverLogo}
+              alt="네이버 계정으로 로그인"
+              className={styles.logo}
+            />
           </a>
         </Col>
         <Col span={5}>
-          <a href="">
-            <img src={kakaoLogo} alt="" className={styles.logo} />
+          <a href="/">
+            <img
+              src={kakaoLogo}
+              alt="카카오 계정으로 로그인"
+              className={styles.logo}
+            />
           </a>
         </Col>
         <Col span={5}>
-          <a href="">
-            <img src={facebookLogo} alt="" className={styles.logo} />
+          <a href="/">
+            <img
+              src={facebookLogo}
+              alt="페이스북 계정으로 로그인"
+              className={styles.logo}
+            />
           </a>
         </Col>
         <Col span={5}>
-          <a href="">
-            <img src={googleLogo} alt="" className={styles.logo} />
+          <a href="/">
+            <img
+              src={googleLogo}
+              alt="구글 계정으로 로그인"
+              className={styles.logo}
+            />
           </a>
         </Col>
       </Row>
