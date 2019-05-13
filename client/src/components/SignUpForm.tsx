@@ -10,10 +10,15 @@ export interface SignUpFormValue {
 }
 
 interface IProps extends FormComponentProps {
+  captcha: { svg: string; code: string };
   onSubmit: (values: SignUpFormValue) => void;
 }
 
-const SignUpForm: React.FunctionComponent<IProps> = ({ form, onSubmit }) => {
+const SignUpForm: React.FunctionComponent<IProps> = ({
+  form,
+  onSubmit,
+  captcha,
+}) => {
   const { getFieldDecorator, validateFields } = form;
 
   const handleSubmit = (e: SyntheticEvent<FormEvent>) => {
@@ -108,6 +113,41 @@ const SignUpForm: React.FunctionComponent<IProps> = ({ form, onSubmit }) => {
           />,
         )}
       </Form.Item>
+      {captcha.svg && (
+        <Form.Item>
+          <span
+            className={styles.captcha}
+            dangerouslySetInnerHTML={{
+              __html: captcha.svg,
+            }}
+          />
+          {getFieldDecorator('captcha', {
+            rules: [
+              { required: true, message: '자동입력방지문자를 입력하세요.' },
+              {
+                validator: (rule, value, callback) => {
+                  if (
+                    value &&
+                    value.toString().toUpperCase() !== captcha.code
+                  ) {
+                    return callback('자동입력방지문자가 일치하지 않습니다.');
+                  }
+                  return callback();
+                },
+              },
+            ],
+          })(
+            <Input
+              prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+              placeholder="자동입력방지문자"
+              size="large"
+              autoComplete="email"
+              disabled={captcha.code === ''}
+              style={{ height: 46, width: 180, marginLeft: 10 }}
+            />,
+          )}
+        </Form.Item>
+      )}
       <Form.Item>
         {getFieldDecorator('service-policy', {
           valuePropName: 'checked',

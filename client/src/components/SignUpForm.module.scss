@@ -10,3 +10,11 @@
 .sign_up_button {
   margin-top: 8px;
 }
+
+.captcha {
+  svg {
+    height: 46px;
+    box-shadow: 1px 1px 7px #c4c4c4;
+    vertical-align: top;
+  }
+}

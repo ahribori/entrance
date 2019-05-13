@@ -4,11 +4,17 @@ import styles from './PasswordReset.module.scss';
 import CenterLayout from '../layout/CenterLayout';
 import { FormComponentProps } from 'antd/lib/form';
 import { Link } from 'react-router-dom';
+import { inject, observer } from 'mobx-react';
+import AuthStore, { IAuthStore } from '../store/AuthStore';
 
 const { Title, Text } = Typography;
 
-interface IProps extends FormComponentProps {}
+interface IProps extends FormComponentProps {
+  authStore: IAuthStore;
+}
 
+@inject('authStore')
+@observer
 class PasswordReset extends Component<IProps, any> {
   sendPasswordResetMail = (email: string) => {
     console.log(email);
@@ -26,7 +32,7 @@ class PasswordReset extends Component<IProps, any> {
   };
 
   render() {
-    const { form } = this.props;
+    const { form, authStore } = this.props;
     const { getFieldDecorator } = form;
     return (
       <CenterLayout>
@@ -61,6 +67,47 @@ class PasswordReset extends Component<IProps, any> {
               />,
             )}
           </Form.Item>
+          {authStore.captcha.svg && (
+            <Form.Item>
+              <span
+                className={styles.captcha}
+                dangerouslySetInnerHTML={{
+                  __html: authStore.captcha.svg,
+                }}
+              />
+              {getFieldDecorator('captcha', {
+                rules: [
+                  { required: true, message: '자동입력방지문자를 입력하세요.' },
+                  {
+                    validator: (rule, value, callback) => {
+                      if (
+                        value &&
+                        value.toString().toUpperCase() !==
+                          authStore.captcha.code
+                      ) {
+                        return callback(
+                          '자동입력방지문자가 일치하지 않습니다.',
+                        );
+                      }
+                      return callback();
+                    },
+                  },
+                ],
+              })(
+                <Input
+                  prefix={
+                    <Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />
+                  }
+                  placeholder="자동입력방지문자"
+                  size="large"
+                  autoComplete="email"
+                  disabled={authStore.captcha.code === ''}
+                  style={{ height: 46, width: 180, marginLeft: 10 }}
+                />,
+              )}
+            </Form.Item>
+          )}
+
           <Form.Item>
             <Button
               type="primary"
@@ -81,6 +128,10 @@ class PasswordReset extends Component<IProps, any> {
         </Form>
       </CenterLayout>
     );
+  }
+
+  componentDidMount(): void {
+    AuthStore.fetchCaptcha();
   }
 }
 
