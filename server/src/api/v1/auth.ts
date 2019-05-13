@@ -20,7 +20,7 @@ router.get(
 router.get(
   '/captcha',
   asyncRouter(async (req, res) => {
-    const captcha = svgCaptcha.create({ noise: 2 });
+    const captcha = svgCaptcha.create({ noise: 2, ignoreChars: '0o1iljJ' });
     res.json(captcha);
   }),
 );
