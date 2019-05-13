@@ -138,7 +138,7 @@ const SignUpForm: React.FunctionComponent<IProps> = ({
             ],
           })(
             <Input
-              prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+              prefix={<Icon type="scan" style={{ color: 'rgba(0,0,0,.25)' }} />}
               placeholder="자동입력방지문자"
               size="large"
               autoComplete="email"
