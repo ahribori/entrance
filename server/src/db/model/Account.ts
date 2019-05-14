@@ -20,10 +20,6 @@ import Role from './Role';
   indexes: [
     {
       unique: true,
-      fields: ['username'],
-    },
-    {
-      unique: true,
       fields: ['email'],
     },
   ],
@@ -34,22 +30,16 @@ class Account extends Model<Account> {
   @Column
   accountType!: string;
 
-  @Comment('아이디')
-  @AllowNull(false)
-  @Unique
-  @Column
-  username!: string;
-
-  @Comment('닉네임')
-  @AllowNull(false)
-  @Column
-  nickname!: string;
-
   @Comment('이메일')
   @AllowNull(false)
   @Unique
   @Column
   email!: string;
+
+  @Comment('닉네임')
+  @AllowNull(false)
+  @Column
+  nickname!: string;
 
   @Comment('이메일 인증여부')
   @AllowNull(false)
