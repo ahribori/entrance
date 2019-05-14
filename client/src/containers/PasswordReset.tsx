@@ -46,29 +46,28 @@ class PasswordReset extends Component<IProps, any> {
           </Text>
         </div>
         <Form onSubmit={this.handleSubmit}>
-        <Form.Item style={{ marginTop: 24 }}>
-          {getFieldDecorator('email', {
-            rules: [
-              { required: true, message: '이메일을 입력하세요.' },
-              {
-                type: 'email',
-                message: '이메일 형식이 아닙니다.',
-              },
-            ],
-          })(
-            <Input
-              prefix={
-                <Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />
-              }
-              placeholder="아이디(이메일)"
-              size="large"
-              autoComplete="email"
-              style={{ height: 46 }}
-            />,
-          )}
-        </Form.Item>
+          <Form.Item style={{ marginTop: 24 }}>
+            {getFieldDecorator('email', {
+              rules: [
+                { required: true, message: '이메일을 입력하세요.' },
+                {
+                  type: 'email',
+                  message: '이메일 형식이 아닙니다.',
+                },
+              ],
+            })(
+              <Input
+                prefix={
+                  <Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />
+                }
+                placeholder="아이디(이메일)"
+                size="large"
+                autoComplete="email"
+                style={{ height: 46 }}
+              />,
+            )}
+          </Form.Item>
           <Form.Item>
-
             {getFieldDecorator('captcha', {
               rules: [
                 { required: true, message: '자동입력방지문자를 입력하세요.' },
@@ -76,12 +75,9 @@ class PasswordReset extends Component<IProps, any> {
                   validator: (rule, value, callback) => {
                     if (
                       value &&
-                      value.toString().toUpperCase() !==
-                        authStore.captcha.code
+                      value.toString().toUpperCase() !== authStore.captcha.code
                     ) {
-                      return callback(
-                        '자동입력방지문자가 일치하지 않습니다.',
-                      );
+                      return callback('자동입력방지문자가 일치하지 않습니다.');
                     }
                     return callback();
                   },
@@ -96,13 +92,31 @@ class PasswordReset extends Component<IProps, any> {
                 size="large"
                 autoComplete="email"
                 disabled={authStore.captcha.code === ''}
-                style={{ height: 46, width: 180, marginRight: 10, marginBottom: 4}}
+                style={{
+                  height: 46,
+                  width: 180,
+                  marginRight: 10,
+                  marginBottom: 4,
+                }}
               />,
             )}
             <span
               className={styles.captcha}
               dangerouslySetInnerHTML={{
                 __html: authStore.captcha.svg,
+              }}
+            />
+            <Button
+              shape="circle"
+              icon="reload"
+              size="small"
+              className={styles.reload}
+              loading={!authStore.captcha.code}
+              onClick={e => {
+                e.preventDefault();
+                AuthStore.resetCaptcha();
+                AuthStore.fetchCaptcha();
+                form.setFieldsValue({ captcha: '' });
               }}
             />
           </Form.Item>

@@ -3,6 +3,7 @@ import styles from './SignUpForm.module.scss';
 import { Link } from 'react-router-dom';
 import { FormComponentProps } from 'antd/lib/form';
 import { Button, Checkbox, Form, Icon, Input } from 'antd';
+import AuthStore from '../store/AuthStore';
 
 export interface SignUpFormValue {
   email: string;
@@ -114,16 +115,12 @@ const SignUpForm: React.FunctionComponent<IProps> = ({
         )}
       </Form.Item>
       <Form.Item>
-
         {getFieldDecorator('captcha', {
           rules: [
             { required: true, message: '자동입력방지문자를 입력하세요.' },
             {
               validator: (rule, value, callback) => {
-                if (
-                  value &&
-                  value.toString().toUpperCase() !== captcha.code
-                ) {
+                if (value && value.toString().toUpperCase() !== captcha.code) {
                   return callback('자동입력방지문자가 일치하지 않습니다.');
                 }
                 return callback();
@@ -144,6 +141,19 @@ const SignUpForm: React.FunctionComponent<IProps> = ({
           className={styles.captcha}
           dangerouslySetInnerHTML={{
             __html: captcha.svg,
+          }}
+        />
+        <Button
+          shape="circle"
+          icon="reload"
+          size="small"
+          className={styles.reload}
+          loading={!captcha.code}
+          onClick={e => {
+            e.preventDefault();
+            AuthStore.resetCaptcha();
+            AuthStore.fetchCaptcha();
+            form.setFieldsValue({ captcha: '' });
           }}
         />
       </Form.Item>
