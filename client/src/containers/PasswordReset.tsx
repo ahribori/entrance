@@ -46,68 +46,66 @@ class PasswordReset extends Component<IProps, any> {
           </Text>
         </div>
         <Form onSubmit={this.handleSubmit}>
-          <Form.Item style={{ marginTop: 24 }}>
-            {getFieldDecorator('email', {
+        <Form.Item style={{ marginTop: 24 }}>
+          {getFieldDecorator('email', {
+            rules: [
+              { required: true, message: '이메일을 입력하세요.' },
+              {
+                type: 'email',
+                message: '이메일 형식이 아닙니다.',
+              },
+            ],
+          })(
+            <Input
+              prefix={
+                <Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />
+              }
+              placeholder="아이디(이메일)"
+              size="large"
+              autoComplete="email"
+              style={{ height: 46 }}
+            />,
+          )}
+        </Form.Item>
+          <Form.Item>
+
+            {getFieldDecorator('captcha', {
               rules: [
-                { required: true, message: '이메일을 입력하세요.' },
+                { required: true, message: '자동입력방지문자를 입력하세요.' },
                 {
-                  type: 'email',
-                  message: '이메일 형식이 아닙니다.',
+                  validator: (rule, value, callback) => {
+                    if (
+                      value &&
+                      value.toString().toUpperCase() !==
+                        authStore.captcha.code
+                    ) {
+                      return callback(
+                        '자동입력방지문자가 일치하지 않습니다.',
+                      );
+                    }
+                    return callback();
+                  },
                 },
               ],
             })(
               <Input
                 prefix={
-                  <Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />
+                  <Icon type="scan" style={{ color: 'rgba(0,0,0,.25)' }} />
                 }
-                placeholder="아이디(이메일)"
+                placeholder="자동입력방지문자"
                 size="large"
                 autoComplete="email"
-                style={{ height: 46 }}
+                disabled={authStore.captcha.code === ''}
+                style={{ height: 46, width: 180, marginRight: 10, marginBottom: 4}}
               />,
             )}
+            <span
+              className={styles.captcha}
+              dangerouslySetInnerHTML={{
+                __html: authStore.captcha.svg,
+              }}
+            />
           </Form.Item>
-          {authStore.captcha.svg && (
-            <Form.Item>
-              <span
-                className={styles.captcha}
-                dangerouslySetInnerHTML={{
-                  __html: authStore.captcha.svg,
-                }}
-              />
-              {getFieldDecorator('captcha', {
-                rules: [
-                  { required: true, message: '자동입력방지문자를 입력하세요.' },
-                  {
-                    validator: (rule, value, callback) => {
-                      if (
-                        value &&
-                        value.toString().toUpperCase() !==
-                          authStore.captcha.code
-                      ) {
-                        return callback(
-                          '자동입력방지문자가 일치하지 않습니다.',
-                        );
-                      }
-                      return callback();
-                    },
-                  },
-                ],
-              })(
-                <Input
-                  prefix={
-                    <Icon type="scan" style={{ color: 'rgba(0,0,0,.25)' }} />
-                  }
-                  placeholder="자동입력방지문자"
-                  size="large"
-                  autoComplete="email"
-                  disabled={authStore.captcha.code === ''}
-                  style={{ height: 46, width: 180, marginLeft: 10 }}
-                />,
-              )}
-            </Form.Item>
-          )}
-
           <Form.Item>
             <Button
               type="primary"

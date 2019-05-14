@@ -12,10 +12,14 @@
 }
 
 .captcha {
+  display: inline-block;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+  width: 150px;
+  height: 46px;
+  vertical-align: top;
   svg {
-    height: 46px;
+    height: 44px;
     vertical-align: top;
-    border: 1px solid rgba(0, 0, 0, 0.15);
-    border-radius: 4px;
   }
 }
