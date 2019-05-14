@@ -12,10 +12,9 @@ describe('AuthService Tests', () => {
     const userInputPassword = 'my-password';
 
     const user = await AuthService.signUp(
-      'ahribori',
-      '아리보리',
-      userInputPassword,
       'ahribori@gmail.com',
+      userInputPassword,
+      '아리보리',
     );
 
     const userSignedUp = user;
@@ -37,10 +36,9 @@ describe('AuthService Tests', () => {
 
   test('Email Verification', async () => {
     const account = await AuthService.signUp(
-      'email-verification',
-      '이메일 테스트',
-      '123456',
       'entrance.auth@gmail.com',
+      '123456',
+      '이메일 테스트',
     );
     const emailVerificationCode = await AuthService.sendEmailVerificationCode(
       account.id,

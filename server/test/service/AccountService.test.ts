@@ -17,7 +17,6 @@ beforeAll(async () => {
   getRandomUserInfo = () => {
     return {
       email: `${uniqueString()}@gmail.com`,
-      username: uniqueString(),
       nickname: uniqueString(),
       password: passwordHash,
       accountType: AccountType.LOCAL,
@@ -132,10 +131,9 @@ describe('AccountService Tests', () => {
     const newPassword = 'zzzzzz';
 
     const account = await AuthService.signUp(
-      'daniel',
-      '다니엘',
-      password,
       'my-email@gmail.com',
+      password,
+      '다니엘',
     );
 
     const passwordChangedAccount = await AccountService.changePassword(
@@ -144,7 +142,7 @@ describe('AccountService Tests', () => {
     );
     try {
       const authBag = await AuthService.login(
-        passwordChangedAccount.username,
+        passwordChangedAccount.email,
         newPassword,
       );
       await expect(authBag).toBeDefined();

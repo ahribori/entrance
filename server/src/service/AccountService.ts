@@ -16,7 +16,6 @@ export enum AccountType {
 
 interface CreateAccountParams {
   accountType: AccountType;
-  username: string;
   nickname: string;
   password?: string;
   email: string;

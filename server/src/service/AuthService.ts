@@ -16,25 +16,22 @@ interface AuthBag {
 class AuthService {
   /**
    * 회원가입
-   * @param username
    * @param nickname
    * @param password
    * @param email
    */
   async signUp(
-    username: string,
-    nickname: string,
-    password: string,
     email: string,
+    password: string,
+    nickname: string,
   ) {
     const salt = this.createSalt();
     const passwordHash = await this.createPasswordHash(password, salt);
 
     return AccountService.createAccount({
       accountType: AccountType.LOCAL,
-      username,
-      password: passwordHash,
       email,
+      password: passwordHash,
       nickname,
       salt,
       role: [RoleType.USER],
@@ -66,15 +63,17 @@ class AuthService {
 
   /**
    * 로그인
-   * @param username
+   * @param email
    * @param password
    */
-  async login(username: string, password: string) {
-    const account = await Account.findOne({ where: { username } });
+  async login(email: string, password: string) {
+    const account = await Account.findOne({ where: { email } });
     if (!account) {
       throw new AccountNotFoundException();
     }
     const passwordHash = await this.createPasswordHash(password, account.salt);
+    console.log(password, account.salt, passwordHash)
+    console.log(account.password === password)
     if (passwordHash !== account.password) {
       throw new PasswordNotMatchedException();
     }
