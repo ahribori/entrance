@@ -1,5 +1,5 @@
 import { action, computed, observable } from 'mobx';
-import request from '../lib/axios';
+import AuthRepository from '../repository/AuthRepository';
 
 export interface IAuthStore {
   captcha: {
@@ -12,8 +12,7 @@ class AuthStore implements IAuthStore {
   @observable captcha: { svg: string; code: string } = { svg: '', code: '' };
 
   @action fetchCaptcha() {
-    request
-      .get('/api/v1/auth/captcha')
+    AuthRepository.fetchCaptcha()
       .then(response => {
         const { data, text } = response.data;
         this.captcha = {
