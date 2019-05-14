@@ -8,6 +8,7 @@ import AuthStore from '../store/AuthStore';
 export interface SignUpFormValue {
   email: string;
   password: string;
+  nickname: string;
 }
 
 interface IProps extends FormComponentProps {

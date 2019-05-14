@@ -1,5 +1,5 @@
 import { action, computed, observable } from 'mobx';
-import AuthRepository from '../repository/AuthRepository';
+import AuthRepository, { SignUpParams } from '../repository/AuthRepository';
 
 export interface IAuthStore {
   captcha: {
@@ -25,6 +25,10 @@ class AuthStore implements IAuthStore {
 
   @action resetCaptcha() {
     this.captcha = { svg: '', code: '' };
+  }
+
+  signUp(params: SignUpParams) {
+    return AuthRepository.signUp(params);
   }
 }
 

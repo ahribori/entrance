@@ -14,8 +14,18 @@ interface IProps {
 @inject('authStore')
 @observer
 class SignUp extends Component<IProps> {
-  handleSubmit = (values: SignUpFormValue) => {
-    console.log(values);
+
+  handleSubmit = async (values: SignUpFormValue) => {
+    const { email, password, nickname } = values;
+    try {
+      const signUpResponse = await AuthStore.signUp({
+        email,
+        password,
+        nickname,
+      });
+    } catch (e) {
+
+    }
   };
 
   render() {
