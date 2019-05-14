@@ -4,20 +4,8 @@ import AccountNotFoundException from '../exception/account/AccountNotFoundExcept
 import Application from '../db/model/Application';
 
 class ApplicationService {
-  private static instance: ApplicationService;
-
-  private constructor() {}
-
-  static getInstance(): ApplicationService {
-    if (!ApplicationService.instance) {
-      ApplicationService.instance = new ApplicationService();
-    }
-    return ApplicationService.instance;
-  }
-
   async createApplication(name: string, accountId: number, origins: string[]) {
-    const accountService = AccountService.getInstance();
-    const account = await accountService.findAccountById(accountId);
+    const account = await AccountService.findAccountById(accountId);
     if (!account) {
       throw new AccountNotFoundException();
     }
@@ -31,4 +19,4 @@ class ApplicationService {
   }
 }
 
-export default ApplicationService;
+export default new ApplicationService();

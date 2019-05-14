@@ -8,8 +8,6 @@ import * as svgCaptcha from 'svg-captcha';
 
 const router = express.Router();
 
-const authService = AuthService.getInstance();
-
 router.get(
   '/',
   asyncRouter(async (req, res) => {
@@ -33,7 +31,7 @@ router.post(
       return next(new HttpException(400, '잘못된 요청입니다.'));
     }
     try {
-      const verified = await authService.verifyEmail(verifyToken);
+      const verified = await AuthService.verifyEmail(verifyToken);
       res.json({ verified });
     } catch (e) {
       if (e instanceof EmailAlreadyVerifiedException) {

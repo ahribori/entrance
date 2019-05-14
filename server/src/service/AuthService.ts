@@ -2,14 +2,11 @@ import * as crypto from 'crypto';
 import Account from '../db/model/Account';
 import EmailAlreadyVerifiedException from '../exception/auth/EmailAlreadyVerifiedException';
 import MailService from './MailService';
-import { RoleType } from '../db/model/Role';
 import AccountService, { AccountType } from './AccountService';
-import AccountNotFoundException from '../exception/account/AccountNotFoundException';
 import TokenService from './TokenService';
+import { RoleType } from '../db/model/Role';
+import AccountNotFoundException from '../exception/account/AccountNotFoundException';
 import PasswordNotMatchedException from '../exception/auth/PasswordNotMatchedException';
-
-const tokenService = TokenService.getInstance();
-const mailService = MailService.getInstance();
 
 interface AuthBag {
   accessToken: string;
@@ -17,17 +14,6 @@ interface AuthBag {
 }
 
 class AuthService {
-  private static instance: AuthService;
-
-  private constructor() {}
-
-  static getInstance(): AuthService {
-    if (!AuthService.instance) {
-      AuthService.instance = new AuthService();
-    }
-    return AuthService.instance;
-  }
-
   /**
    * 회원가입
    * @param username
@@ -41,11 +27,10 @@ class AuthService {
     password: string,
     email: string,
   ) {
-    const accountService = AccountService.getInstance();
     const salt = this.createSalt();
     const passwordHash = await this.createPasswordHash(password, salt);
 
-    return accountService.createAccount({
+    return AccountService.createAccount({
       accountType: AccountType.LOCAL,
       username,
       password: passwordHash,
@@ -113,9 +98,8 @@ class AuthService {
   async authorize(accountId: string | number): Promise<AuthBag> {
     // TODO Authentication
 
-    const tokenService = TokenService.getInstance();
-    const accessToken = tokenService.issueAccessToken({ accountId });
-    const refreshToken = tokenService.issueRefreshToken({ accountId });
+    const accessToken = TokenService.issueAccessToken({ accountId });
+    const refreshToken = TokenService.issueRefreshToken({ accountId });
     return { accessToken, refreshToken };
   }
 
@@ -124,14 +108,13 @@ class AuthService {
    * @param refreshToken
    */
   async refresh(refreshToken: string): Promise<AuthBag> {
-    const tokenService = TokenService.getInstance();
     try {
-      const verifiedPayload = tokenService.verifyToken(refreshToken);
+      const verifiedPayload = TokenService.verifyToken(refreshToken);
       const { accountId, exp } = verifiedPayload;
 
       // exp가 충분히 남았으면 refreshToken을 똑같이 내려주고, 조금밖에 안남았으면 새로운 refreshToken을 내려주자.
-      const newAccessToken = tokenService.issueAccessToken({ accountId });
-      const newRefreshToken = tokenService.issueRefreshToken({ accountId });
+      const newAccessToken = TokenService.issueAccessToken({ accountId });
+      const newRefreshToken = TokenService.issueRefreshToken({ accountId });
       return { accessToken: newAccessToken, refreshToken: newRefreshToken };
     } catch (e) {
       throw e;
@@ -143,11 +126,11 @@ class AuthService {
     if (!account) {
       throw new AccountNotFoundException();
     }
-    const verificationToken = tokenService.issueEmailVerificationToken({
+    const verificationToken = TokenService.issueEmailVerificationToken({
       accountId,
     });
 
-    await mailService.sendMail({
+    await MailService.sendMail({
       to: account.email,
       from: 'entrance <entrance.auth@gmail.com>',
       subject: '이메일 인증',
@@ -161,7 +144,7 @@ class AuthService {
   }
 
   async verifyEmail(code: string): Promise<boolean> {
-    const payload = tokenService.verifyToken(code);
+    const payload = TokenService.verifyToken(code);
     const { accountId } = payload;
     const account = await Account.findByPk(accountId);
     if (!account) {
@@ -175,4 +158,4 @@ class AuthService {
   }
 }
 
-export default AuthService;
+export default new AuthService();

@@ -25,17 +25,6 @@ interface CreateAccountParams {
 }
 
 class AccountService {
-  private static instance: AccountService;
-
-  private constructor() {}
-
-  static getInstance(): AccountService {
-    if (!AccountService.instance) {
-      AccountService.instance = new AccountService();
-    }
-    return AccountService.instance;
-  }
-
   async createAccount(account: CreateAccountParams) {
     return Account.create(account, { include: [Role] });
   }
@@ -81,13 +70,12 @@ class AccountService {
   }
 
   async changePassword(email: string, newPassword: string) {
-    const authService = AuthService.getInstance();
     const account = await Account.findOne({ where: { email } });
     if (!account) {
       throw new AccountNotFoundException();
     }
-    const salt = authService.createSalt();
-    const newPasswordHash = await authService.createPasswordHash(
+    const salt = AuthService.createSalt();
+    const newPasswordHash = await AuthService.createPasswordHash(
       newPassword,
       salt,
     );
@@ -125,4 +113,4 @@ class AccountService {
   }
 }
 
-export default AccountService;
+export default new AccountService();

@@ -8,13 +8,10 @@ beforeAll(async () => {
 });
 
 describe('AuthService Tests', () => {
-  const authService = AuthService.getInstance();
-  const tokenService = TokenService.getInstance();
-
   test('Signup test', async () => {
     const userInputPassword = 'my-password';
 
-    const user = await authService.signUp(
+    const user = await AuthService.signUp(
       'ahribori',
       '아리보리',
       userInputPassword,
@@ -23,7 +20,7 @@ describe('AuthService Tests', () => {
 
     const userSignedUp = user;
     const { salt, password } = userSignedUp;
-    const userInputPasswordHash = await authService.createPasswordHash(
+    const userInputPasswordHash = await AuthService.createPasswordHash(
       userInputPassword,
       salt,
     );
@@ -32,27 +29,27 @@ describe('AuthService Tests', () => {
 
   test('Login test', async () => {
     const accountId = 1;
-    const authBag = await authService.authorize(accountId);
+    const authBag = await AuthService.authorize(accountId);
     const { accessToken } = authBag;
-    const verifiedPayload = tokenService.verifyToken(accessToken);
+    const verifiedPayload = TokenService.verifyToken(accessToken);
     expect(verifiedPayload.accountId).toEqual(accountId);
   });
 
   test('Email Verification', async () => {
-    const account = await authService.signUp(
+    const account = await AuthService.signUp(
       'email-verification',
       '이메일 테스트',
       '123456',
       'entrance.auth@gmail.com',
     );
-    const emailVerificationCode = await authService.sendEmailVerificationCode(
+    const emailVerificationCode = await AuthService.sendEmailVerificationCode(
       account.id,
     );
-    const verified = await authService.verifyEmail(emailVerificationCode);
+    const verified = await AuthService.verifyEmail(emailVerificationCode);
     expect(verified).toBeTruthy();
 
     try {
-      await authService.verifyEmail('xxxxx');
+      await AuthService.verifyEmail('xxxxx');
     } catch (e) {
       expect(e instanceof JsonWebTokenError).toBeTruthy();
     }

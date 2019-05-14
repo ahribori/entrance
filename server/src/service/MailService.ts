@@ -17,15 +17,6 @@ const transporter = nodemailer.createTransport({
 });
 
 class MailService {
-  private static instance: MailService;
-  private constructor() {}
-  static getInstance(): MailService {
-    if (!MailService.instance) {
-      MailService.instance = new MailService();
-    }
-    return MailService.instance;
-  }
-
   async sendMail(mailOptions: {
     from: string;
     to: string;
@@ -36,4 +27,4 @@ class MailService {
   }
 }
 
-export default MailService;
+export default new MailService();

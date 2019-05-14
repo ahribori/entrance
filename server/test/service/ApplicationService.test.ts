@@ -9,24 +9,20 @@ beforeAll(async () => {
 });
 
 describe('ApplicationService tests', () => {
-  const accountService = AccountService.getInstance();
-  const authService = AuthService.getInstance();
-  const applicationService = ApplicationService.getInstance();
-
   test('Create Application', async () => {
-    const salt = authService.createSalt();
-    const userCreated = await accountService.createAccount({
+    const salt = AuthService.createSalt();
+    const userCreated = await AccountService.createAccount({
       email: 'app_test@gmail.com',
       username: 'app_test1',
       nickname: '테스트',
-      password: await authService.createPasswordHash('123456', salt),
+      password: await AuthService.createPasswordHash('123456', salt),
       accountType: AccountType.LOCAL,
       salt,
       role: [],
     });
 
     try {
-      const applicationCreated = await applicationService.createApplication(
+      const applicationCreated = await ApplicationService.createApplication(
         'My Application',
         userCreated.id,
         ['a, b, c'],
@@ -35,7 +31,7 @@ describe('ApplicationService tests', () => {
     } catch (e) {}
 
     try {
-      const applicationCreated = await applicationService.createApplication(
+      const applicationCreated = await ApplicationService.createApplication(
         'My Application',
         1000,
         ['a, b, c'],

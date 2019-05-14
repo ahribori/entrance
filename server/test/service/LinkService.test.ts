@@ -4,27 +4,22 @@ import AccountService, { AccountType } from '../../src/service/AccountService';
 import db from '../../src/db';
 import ApplicationService from '../../src/service/ApplicationService';
 
-const linkService = LinkService.getInstance();
-const accountService = AccountService.getInstance();
-const authService = AuthService.getInstance();
-const applicationService = ApplicationService.getInstance();
-
 let accountId: number;
 let applicationId: number;
 
 beforeAll(async () => {
   await db.authenticate();
-  const salt = authService.createSalt();
-  const accountCreated = await accountService.createAccount({
+  const salt = AuthService.createSalt();
+  const accountCreated = await AccountService.createAccount({
     email: 'link-service-test@gmail.com',
     username: 'link-service',
     nickname: '테스트',
-    password: await authService.createPasswordHash('123456', salt),
+    password: await AuthService.createPasswordHash('123456', salt),
     accountType: AccountType.LOCAL,
     salt,
     role: [],
   });
-  const applicationCreated = await applicationService.createApplication(
+  const applicationCreated = await ApplicationService.createApplication(
     '테스트 어플리케이션',
     accountCreated.id,
     ['https://ahribori.com'],
@@ -35,15 +30,15 @@ beforeAll(async () => {
 
 describe('LinkService tests', () => {
   test('Link Account to Application', async () => {
-    const link = await linkService
-      .linkAccount(accountId)
-      .toApplication(applicationId);
+    const link = await LinkService.linkAccount(accountId).toApplication(
+      applicationId,
+    );
     expect(link).toBeDefined();
   });
 
   test('Unlink Account from Application', async () => {
-    const unlink = await linkService
-      .unlinkAccount(accountId)
-      .fromApplication(applicationId);
+    const unlink = await LinkService.unlinkAccount(accountId).fromApplication(
+      applicationId,
+    );
   });
 });

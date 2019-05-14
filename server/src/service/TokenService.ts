@@ -19,18 +19,10 @@ export interface VerifiedPayload extends TokenPayload {
 }
 
 class TokenService {
-  private static instance: TokenService;
   private readonly _secret: string;
 
-  private constructor() {
+  constructor() {
     this._secret = config.secret;
-  }
-
-  static getInstance(): TokenService {
-    if (!TokenService.instance) {
-      TokenService.instance = new TokenService();
-    }
-    return TokenService.instance;
   }
 
   get secret() {
@@ -78,4 +70,4 @@ class TokenService {
   }
 }
 
-export default TokenService;
+export default new TokenService();

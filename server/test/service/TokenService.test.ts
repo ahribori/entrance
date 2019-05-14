@@ -2,17 +2,15 @@ import { JsonWebTokenError } from 'jsonwebtoken';
 import TokenService, { TokenType } from '../../src/service/TokenService';
 
 describe('TokenService Tests', () => {
-  const authorizationService = TokenService.getInstance();
-
   test('Secret key exist', () => {
-    const secretKey = authorizationService.secret;
+    const secretKey = TokenService.secret;
     expect(secretKey).toBeDefined();
   });
 
   test('Issue & Verify access token', () => {
     const accountId = 1;
-    const accessToken = authorizationService.issueAccessToken({ accountId });
-    const payload = authorizationService.verifyToken(accessToken);
+    const accessToken = TokenService.issueAccessToken({ accountId });
+    const payload = TokenService.verifyToken(accessToken);
 
     expect(accessToken).toBeDefined();
     expect(payload.sub).toEqual(TokenType.ACCESS_TOKEN);
@@ -21,10 +19,10 @@ describe('TokenService Tests', () => {
 
   test('Issue & Verify refresh token', () => {
     const accountId = 1;
-    const refreshToken = authorizationService.issueRefreshToken({
+    const refreshToken = TokenService.issueRefreshToken({
       accountId,
     });
-    const payload = authorizationService.verifyToken(refreshToken);
+    const payload = TokenService.verifyToken(refreshToken);
 
     expect(refreshToken).toBeDefined();
     expect(payload.sub).toEqual(TokenType.REFRESH_TOKEN);
@@ -33,7 +31,7 @@ describe('TokenService Tests', () => {
 
   test('Verify token error test', () => {
     try {
-      authorizationService.verifyToken('xxxxxxx');
+      TokenService.verifyToken('xxxxxxx');
     } catch (e) {
       expect(e instanceof JsonWebTokenError).toEqual(true);
     }
