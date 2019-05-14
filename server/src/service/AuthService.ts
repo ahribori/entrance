@@ -20,11 +20,7 @@ class AuthService {
    * @param password
    * @param email
    */
-  async signUp(
-    email: string,
-    password: string,
-    nickname: string,
-  ) {
+  async signUp(email: string, password: string, nickname: string) {
     const salt = this.createSalt();
     const passwordHash = await this.createPasswordHash(password, salt);
 
@@ -34,7 +30,7 @@ class AuthService {
       password: passwordHash,
       nickname,
       salt,
-      role: [RoleType.USER],
+      roles: [{ role: RoleType.USER }],
     });
   }
 
@@ -72,8 +68,6 @@ class AuthService {
       throw new AccountNotFoundException();
     }
     const passwordHash = await this.createPasswordHash(password, account.salt);
-    console.log(password, account.salt, passwordHash)
-    console.log(account.password === password)
     if (passwordHash !== account.password) {
       throw new PasswordNotMatchedException();
     }

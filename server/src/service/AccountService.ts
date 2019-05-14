@@ -20,7 +20,7 @@ interface CreateAccountParams {
   password?: string;
   email: string;
   salt: string;
-  role: RoleType[];
+  roles: { role: RoleType }[];
 }
 
 class AccountService {

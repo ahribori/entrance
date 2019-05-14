@@ -3,6 +3,7 @@ import LinkService from '../../src/service/LinkService';
 import AccountService, { AccountType } from '../../src/service/AccountService';
 import db from '../../src/db';
 import ApplicationService from '../../src/service/ApplicationService';
+import { RoleType } from '../../src/db/model/Role';
 
 let accountId: number;
 let applicationId: number;
@@ -12,12 +13,11 @@ beforeAll(async () => {
   const salt = AuthService.createSalt();
   const accountCreated = await AccountService.createAccount({
     email: 'link-service-test@gmail.com',
-    username: 'link-service',
     nickname: '테스트',
     password: await AuthService.createPasswordHash('123456', salt),
     accountType: AccountType.LOCAL,
     salt,
-    role: [],
+    roles: [{ role: RoleType.USER }],
   });
   const applicationCreated = await ApplicationService.createApplication(
     '테스트 어플리케이션',
