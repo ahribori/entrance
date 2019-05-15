@@ -1,8 +1,10 @@
 import * as express from 'express';
+import { body, validationResult } from 'express-validator/check';
 import EmailAlreadyVerifiedException from '../../exception/auth/EmailAlreadyVerifiedException';
 import { TokenExpiredError } from 'jsonwebtoken';
 import AuthService from '../../service/AuthService';
 import HttpException from '../../exception/common/HttpException';
+import RequestParamException from '../../exception/common/RequestParamException';
 import asyncRouter from '../../middleware/async-router';
 import * as svgCaptcha from 'svg-captcha';
 import { ValidationError } from 'sequelize';
@@ -26,7 +28,23 @@ router.get(
 
 router.post(
   '/signup',
+  [
+    body('email')
+      .exists()
+      .withMessage('')
+      .isEmail()
+      .withMessage('이메일 형식이 아닙니다.'),
+    body('password')
+      .trim()
+      .matches(/^.{6,30}$/)
+      .withMessage('비밀번호는 6-30자 사이입니다.'),
+  ],
   asyncRouter(async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      throw new RequestParamException(errors);
+    }
+
     const { email, password, nickname } = req.body;
     try {
       const account = await AuthService.signUp(email, password, nickname);
