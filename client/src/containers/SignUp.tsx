@@ -7,6 +7,7 @@ import { Divider } from 'antd';
 import { inject, observer } from 'mobx-react';
 import AuthStore, { IAuthStore } from '../store/AuthStore';
 import { RouteComponentProps } from 'react-router';
+import { authStore } from '../store';
 
 interface IProps extends RouteComponentProps {
   authStore: IAuthStore;
@@ -24,6 +25,7 @@ class SignUp extends Component<IProps> {
     });
 
     if (signUpResponse.success) {
+      authStore.storeAccessToken(signUpResponse.data.auth.accessToken);
       this.props.history.replace('/signup/success');
     }
 

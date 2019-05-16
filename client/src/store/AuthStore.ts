@@ -8,11 +8,13 @@ export interface IAuthStore {
     code: string;
   };
   signUpState: RequestState;
+  accessToken: string | null;
 }
 
 class AuthStore implements IAuthStore {
   @observable captcha = { svg: '', code: '' };
   @observable signUpState = RequestState.CLEAN;
+  @observable accessToken: string | null = null;
 
   @action fetchCaptcha() {
     AuthRepository.fetchCaptcha()
@@ -41,6 +43,16 @@ class AuthStore implements IAuthStore {
         this.signUpState = RequestState.ERROR;
         return normalizeResponse(err);
       });
+  }
+
+  @action loadAccessToken() {
+    this.accessToken = window.localStorage.getItem('__entrance_access_token__');
+    return this.accessToken;
+  }
+
+  @action storeAccessToken(accessToken: string) {
+    localStorage.setItem('__entrance_access_token__', accessToken);
+    return accessToken;
   }
 }
 
