@@ -1,13 +1,13 @@
 import * as express from 'express';
 import { body, validationResult } from 'express-validator/check';
 import EmailAlreadyVerifiedException from '../../exception/auth/EmailAlreadyVerifiedException';
+import AccountAlreadyExistException from '../../exception/account/AccountAlreadyExistException';
 import { TokenExpiredError } from 'jsonwebtoken';
 import AuthService from '../../service/AuthService';
 import HttpException from '../../exception/common/HttpException';
 import RequestParamException from '../../exception/common/RequestParamException';
 import asyncRouter from '../../middleware/async-router';
 import * as svgCaptcha from 'svg-captcha';
-import { ValidationError } from 'sequelize';
 
 const router = express.Router();
 
@@ -53,8 +53,8 @@ router.post(
         auth: authBag,
       });
     } catch (e) {
-      if (e instanceof ValidationError) {
-        throw new HttpException(409, '이미 존재하는 이메일입니다.');
+      if (e instanceof AccountAlreadyExistException) {
+        throw new HttpException(409, '이미 사용중인 이메일입니다.');
       }
       throw e;
     }

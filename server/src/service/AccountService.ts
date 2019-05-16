@@ -5,6 +5,7 @@ import PointNotEnoughException from '../exception/account/PointNotEnoughExceptio
 import AccountNotFoundException from '../exception/account/AccountNotFoundException';
 import db from '../db';
 import AuthService from './AuthService';
+import AccountAlreadyExistException from '../exception/account/AccountAlreadyExistException';
 
 export enum AccountType {
   LOCAL = 'LOCAL',
@@ -25,6 +26,10 @@ interface CreateAccountParams {
 
 class AccountService {
   async createAccount(account: CreateAccountParams) {
+    const accountFounded = await this.findAccountByEmail(account.email);
+    if (accountFounded) {
+      throw new AccountAlreadyExistException();
+    }
     return Account.create(account, { include: [Role] });
   }
 

@@ -15,7 +15,10 @@ export const errorHandler = (
         message: 'Internal server error',
       });
     }
-    return res.status(err.status).json(err);
+    return res.status(err.status).json({
+      status: err.status,
+      message: err.message,
+    });
   } else if (err instanceof RequestParamException) {
     return res.status(err.status).json({
       status: err.status,
