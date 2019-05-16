@@ -1,7 +1,7 @@
 import React, { Component, FormEvent, SyntheticEvent } from 'react';
 import { Typography, Icon, Form, Input, Button } from 'antd';
 import styles from './PasswordReset.module.scss';
-import CenterLayout from '../layout/CenterLayout';
+import CenterLayout from '../components/layout/CenterLayout';
 import { FormComponentProps } from 'antd/lib/form';
 import { Link } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';

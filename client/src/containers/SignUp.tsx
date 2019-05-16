@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styles from './SignUp.module.scss';
-import CenterLayout from '../layout/CenterLayout';
+import CenterLayout from '../components/layout/CenterLayout';
 import SocialLogin from '../components/SocialLogin';
 import SignUpForm, { SignUpFormValue } from '../components/SignUpForm';
 import { Divider } from 'antd';
@@ -24,7 +24,7 @@ class SignUp extends Component<IProps> {
     });
 
     if (signUpResponse.success) {
-      this.props.history.replace('/');
+      this.props.history.replace('/signup/success');
     }
 
     return signUpResponse;

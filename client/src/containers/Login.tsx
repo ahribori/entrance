@@ -4,7 +4,7 @@ import styles from './Login.module.scss';
 import { Divider } from 'antd';
 import LoginForm, { LoginFormValue } from '../components/LoginForm';
 import SocialLogin from '../components/SocialLogin';
-import CenterLayout from '../layout/CenterLayout';
+import CenterLayout from '../components/layout/CenterLayout';
 
 class Login extends Component<any, any> {
   state = {

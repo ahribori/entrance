@@ -12,6 +12,7 @@ const loadDynamic = (dynamicImport: Promise<any>) =>
 
 const Login = loadDynamic(import('./containers/Login'));
 const SignUp = loadDynamic(import('./containers/SignUp'));
+const SignUpSuccess = loadDynamic(import('./containers/SignUpSuccess'));
 const PasswordReset = loadDynamic(import('./containers/PasswordReset'));
 
 // @ts-ignore
@@ -19,6 +20,7 @@ export default (
   <Switch>
     <Route exact path="/" component={Login} />
     <Route exact path="/signup" component={SignUp} />
+    <Route exact path="/signup/success" component={SignUpSuccess} />
     <Route exact path="/password-reset" component={PasswordReset} />
   </Switch>
 );
