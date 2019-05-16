@@ -1,13 +1,14 @@
 import * as express from 'express';
-import { body, validationResult } from 'express-validator/check';
+import { body, header, validationResult } from 'express-validator/check';
 import EmailAlreadyVerifiedException from '../../exception/auth/EmailAlreadyVerifiedException';
 import AccountAlreadyExistException from '../../exception/account/AccountAlreadyExistException';
-import { TokenExpiredError } from 'jsonwebtoken';
+import { JsonWebTokenError, TokenExpiredError } from 'jsonwebtoken';
 import AuthService from '../../service/AuthService';
 import HttpException from '../../exception/common/HttpException';
 import RequestParamException from '../../exception/common/RequestParamException';
 import asyncRouter from '../../middleware/async-router';
 import * as svgCaptcha from 'svg-captcha';
+import TokenService from '../../service/TokenService';
 
 const router = express.Router();
 
@@ -55,6 +56,27 @@ router.post(
     } catch (e) {
       if (e instanceof AccountAlreadyExistException) {
         throw new HttpException(409, '이미 사용중인 이메일입니다.');
+      }
+      throw e;
+    }
+  }),
+);
+
+router.post(
+  '/verify',
+  asyncRouter(async (req, res) => {
+    const accessToken = req.headers['authorization'];
+    if (!accessToken) {
+      throw new HttpException(400, '엑세스 토큰이 없습니다.');
+    }
+    try {
+      const verified = TokenService.verifyToken(accessToken);
+      res.json(verified);
+    } catch (e) {
+      if (e instanceof JsonWebTokenError) {
+        throw new HttpException(401, '올바른 형식이 아닙니다.');
+      } else if (e instanceof TokenExpiredError) {
+        throw new HttpException(403, '만료된 토큰입니다.');
       }
       throw e;
     }
