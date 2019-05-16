@@ -1,15 +1,18 @@
-import { action, computed, observable } from 'mobx';
+import { action, observable } from 'mobx';
 import AuthRepository, { SignUpParams } from '../repository/AuthRepository';
+import { normalizeResponse, RequestState } from './helper';
 
 export interface IAuthStore {
   captcha: {
     svg: string;
     code: string;
   };
+  signUpState: RequestState;
 }
 
 class AuthStore implements IAuthStore {
-  @observable captcha: { svg: string; code: string } = { svg: '', code: '' };
+  @observable captcha = { svg: '', code: '' };
+  @observable signUpState = RequestState.CLEAN;
 
   @action fetchCaptcha() {
     AuthRepository.fetchCaptcha()
@@ -27,8 +30,17 @@ class AuthStore implements IAuthStore {
     this.captcha = { svg: '', code: '' };
   }
 
-  signUp(params: SignUpParams) {
-    return AuthRepository.signUp(params);
+  @action signUp(params: SignUpParams) {
+    this.signUpState = RequestState.PENDING;
+    return AuthRepository.signUp(params)
+      .then(response => {
+        this.signUpState = RequestState.DONE;
+        return normalizeResponse(response);
+      })
+      .catch(err => {
+        this.signUpState = RequestState.ERROR;
+        return normalizeResponse(err);
+      });
   }
 }
 

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { FormComponentProps } from 'antd/lib/form';
 import { Button, Checkbox, Form, Icon, Input } from 'antd';
 import AuthStore from '../store/AuthStore';
+import { NormalizedResponse, RequestState } from '../store/helper';
 
 export interface SignUpFormValue {
   email: string;
@@ -13,21 +14,32 @@ export interface SignUpFormValue {
 
 interface IProps extends FormComponentProps {
   captcha: { svg: string; code: string };
-  onSubmit: (values: SignUpFormValue) => void;
+  signUpState: RequestState;
+  onSubmit: (values: SignUpFormValue) => Promise<NormalizedResponse>;
 }
 
 const SignUpForm: React.FunctionComponent<IProps> = ({
   form,
-  onSubmit,
   captcha,
+  signUpState,
+  onSubmit,
 }) => {
-  const { getFieldDecorator, validateFields } = form;
+  const { getFieldDecorator, validateFields, setFields } = form;
+  const pending = signUpState === RequestState.PENDING;
 
   const handleSubmit = (e: SyntheticEvent<FormEvent>) => {
     e.preventDefault();
-    validateFields((err, values) => {
+    validateFields(async (err, values) => {
       if (!err) {
-        onSubmit(values);
+        const response = await onSubmit(values);
+        if (!response.success && response.status === 409) {
+          setFields({
+            email: {
+              value: values.email,
+              errors: [new Error('이미 사용중인 이메일입니다.')],
+            },
+          });
+        }
       }
     });
   };
@@ -49,6 +61,7 @@ const SignUpForm: React.FunctionComponent<IProps> = ({
             placeholder="아이디(이메일)"
             size="large"
             autoComplete="email"
+            disabled={pending}
             style={{ height: 46 }}
           />,
         )}
@@ -67,6 +80,7 @@ const SignUpForm: React.FunctionComponent<IProps> = ({
             placeholder="비밀번호 (영문, 숫자, 특수문자 6-30자)"
             size="large"
             autoComplete="password"
+            disabled={pending}
             style={{ height: 46 }}
           />,
         )}
@@ -91,6 +105,7 @@ const SignUpForm: React.FunctionComponent<IProps> = ({
             placeholder="비밀번호 확인"
             size="large"
             autoComplete="password-check"
+            disabled={pending}
             style={{ height: 46 }}
           />,
         )}
@@ -111,6 +126,7 @@ const SignUpForm: React.FunctionComponent<IProps> = ({
             placeholder="닉네임 (2-16자)"
             size="large"
             autoComplete="nickname"
+            disabled={pending}
             style={{ height: 46 }}
           />,
         )}
@@ -134,7 +150,7 @@ const SignUpForm: React.FunctionComponent<IProps> = ({
             placeholder="자동입력방지문자"
             size="large"
             autoComplete="email"
-            disabled={captcha.code === ''}
+            disabled={captcha.code === '' || pending}
             style={{ height: 46, width: 180, marginRight: 10 }}
           />,
         )}
@@ -150,6 +166,7 @@ const SignUpForm: React.FunctionComponent<IProps> = ({
           size="small"
           className={styles.reload}
           loading={!captcha.code}
+          disabled={pending}
           onClick={e => {
             e.preventDefault();
             AuthStore.resetCaptcha();
@@ -173,7 +190,7 @@ const SignUpForm: React.FunctionComponent<IProps> = ({
             },
           ],
         })(
-          <Checkbox>
+          <Checkbox disabled={pending}>
             <a href="#none">서비스 약관</a>에 동의합니다.
           </Checkbox>,
         )}
@@ -187,6 +204,7 @@ const SignUpForm: React.FunctionComponent<IProps> = ({
           block
           style={{ height: 46 }}
           icon="form"
+          loading={pending}
         >
           계정 만들기
         </Button>

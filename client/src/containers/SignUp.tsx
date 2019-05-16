@@ -6,26 +6,28 @@ import SignUpForm, { SignUpFormValue } from '../components/SignUpForm';
 import { Divider } from 'antd';
 import { inject, observer } from 'mobx-react';
 import AuthStore, { IAuthStore } from '../store/AuthStore';
+import { RouteComponentProps } from 'react-router';
 
-interface IProps {
+interface IProps extends RouteComponentProps {
   authStore: IAuthStore;
 }
 
 @inject('authStore')
 @observer
 class SignUp extends Component<IProps> {
-
   handleSubmit = async (values: SignUpFormValue) => {
     const { email, password, nickname } = values;
-    try {
-      const signUpResponse = await AuthStore.signUp({
-        email,
-        password,
-        nickname,
-      });
-    } catch (e) {
+    const signUpResponse = await AuthStore.signUp({
+      email,
+      password,
+      nickname,
+    });
 
+    if (signUpResponse.success) {
+      this.props.history.replace('/');
     }
+
+    return signUpResponse;
   };
 
   render() {
@@ -34,7 +36,11 @@ class SignUp extends Component<IProps> {
       <CenterLayout>
         <SocialLogin />
         <Divider className={styles.divider}>또는</Divider>
-        <SignUpForm onSubmit={this.handleSubmit} captcha={authStore.captcha} />
+        <SignUpForm
+          onSubmit={this.handleSubmit}
+          captcha={authStore.captcha}
+          signUpState={authStore.signUpState}
+        />
       </CenterLayout>
     );
   }
