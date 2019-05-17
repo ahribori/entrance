@@ -8,6 +8,12 @@ export interface SignUpParams {
   [key: string]: any;
 }
 
+export interface SignInParams {
+  email: string;
+  password: string;
+  [key: string]: any;
+}
+
 class AuthRepository {
   baseUrl = '/api/v1/auth';
 
@@ -18,6 +24,13 @@ class AuthRepository {
   signUp(params: SignUpParams) {
     return request.post(
       `${this.baseUrl}/signup`,
+      queryString.stringify(params),
+    );
+  }
+
+  signIn(params: SignInParams) {
+    return request.post(
+      `${this.baseUrl}/signin`,
       queryString.stringify(params),
     );
   }

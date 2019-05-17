@@ -3,6 +3,7 @@ import { Button, Checkbox, Form, Icon, Input } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import styles from './LoginForm.module.scss';
 import { Link } from 'react-router-dom';
+import { NormalizedResponse } from '../store/helper';
 
 export interface LoginFormValue {
   email: string;
@@ -10,7 +11,7 @@ export interface LoginFormValue {
 }
 
 interface IProps extends FormComponentProps {
-  onSubmit: (values: LoginFormValue) => void;
+  onSubmit: (values: LoginFormValue) => Promise<NormalizedResponse>;
 }
 
 const LoginForm: React.FunctionComponent<IProps> = ({ form, onSubmit }) => {
@@ -18,9 +19,13 @@ const LoginForm: React.FunctionComponent<IProps> = ({ form, onSubmit }) => {
 
   const handleSubmit = (e: SyntheticEvent<FormEvent>) => {
     e.preventDefault();
-    validateFields((err, values) => {
+    validateFields(async (err, values) => {
       if (!err) {
-        onSubmit(values);
+        const response = await onSubmit(values);
+
+        if (response){
+
+        }
       }
     });
   };

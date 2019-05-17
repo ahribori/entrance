@@ -5,12 +5,12 @@ import CenterLayout from '../components/layout/CenterLayout';
 import { FormComponentProps } from 'antd/lib/form';
 import { Link } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
-import AuthStore, { IAuthStore } from '../store/AuthStore';
+import AuthStore  from '../store/AuthStore';
 
 const { Title, Text } = Typography;
 
 interface IProps extends FormComponentProps {
-  authStore: IAuthStore;
+  authStore: typeof AuthStore;
 }
 
 @inject('authStore')

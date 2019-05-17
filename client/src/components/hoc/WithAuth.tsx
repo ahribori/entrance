@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { inject, observer } from 'mobx-react';
-import AuthStore, { IAuthStore } from '../../store/AuthStore';
+import AuthStore  from '../../store/AuthStore';
 import { Redirect } from 'react-router';
 
 export interface WithAuthProps {
-  authStore: IAuthStore;
+  authStore: typeof AuthStore;
   auth: string;
 }
 

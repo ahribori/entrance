@@ -5,12 +5,12 @@ import SocialLogin from '../components/SocialLogin';
 import SignUpForm, { SignUpFormValue } from '../components/SignUpForm';
 import { Divider } from 'antd';
 import { inject, observer } from 'mobx-react';
-import AuthStore, { IAuthStore } from '../store/AuthStore';
+import AuthStore from '../store/AuthStore';
 import { RouteComponentProps } from 'react-router';
 import { authStore } from '../store';
 
 interface IProps extends RouteComponentProps {
-  authStore: IAuthStore;
+  authStore: typeof AuthStore;
 }
 
 @inject('authStore')
