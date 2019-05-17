@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { FormComponentProps } from 'antd/lib/form';
 import { Button, Checkbox, Form, Icon, Input } from 'antd';
 import AuthStore from '../store/AuthStore';
-import { NormalizedResponse, RequestState } from '../store/helper';
+import { NormalizedResponse, RequestState } from '../store/StoreHelper';
 
 export interface SignUpFormValue {
   email: string;
@@ -25,7 +25,7 @@ const SignUpForm: React.FunctionComponent<IProps> = ({
   onSubmit,
 }) => {
   const { getFieldDecorator, validateFields, setFields } = form;
-  const pending = signUpState === RequestState.PENDING;
+  const pending = signUpState.pending;
 
   const handleSubmit = (e: SyntheticEvent<FormEvent>) => {
     e.preventDefault();

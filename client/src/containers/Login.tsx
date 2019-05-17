@@ -16,9 +16,7 @@ class Login extends Component<any, any> {
   };
 
   handleSubmit = async (values: LoginFormValue) => {
-    const signInResponse = await AuthStore.signIn(values);
-
-    return signInResponse;
+    return AuthStore.signIn(values);
   };
 
   render() {

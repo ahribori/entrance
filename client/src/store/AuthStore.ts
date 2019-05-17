@@ -1,11 +1,14 @@
 import { action, observable } from 'mobx';
-import AuthRepository, { SignInParams, SignUpParams } from '../repository/AuthRepository';
-import { normalizeResponse, RequestState } from './helper';
+import StoreHelper from './StoreHelper';
+import AuthRepository, {
+  SignInParams,
+  SignUpParams,
+} from '../repository/AuthRepository';
 
 class AuthStore {
+  @observable signUpState = StoreHelper.createInitialState();
+  @observable loginState = StoreHelper.createInitialState();
   @observable captcha = { svg: '', code: '' };
-  @observable signUpState = RequestState.CLEAN;
-  @observable loginState = RequestState.CLEAN;
   @observable accessToken: string | null = null;
 
   @action fetchCaptcha() {
@@ -25,28 +28,28 @@ class AuthStore {
   }
 
   @action signUp(params: SignUpParams) {
-    this.signUpState = RequestState.PENDING;
+    this.signUpState = StoreHelper.createPendingState();
     return AuthRepository.signUp(params)
       .then(response => {
-        this.signUpState = RequestState.DONE;
-        return normalizeResponse(response);
+        this.signUpState = StoreHelper.createDoneState(response);
+        return StoreHelper.normalizeResponse(response);
       })
       .catch(err => {
-        this.signUpState = RequestState.ERROR;
-        return normalizeResponse(err);
+        this.signUpState = StoreHelper.createErrorState(err);
+        return StoreHelper.normalizeResponse(err);
       });
   }
 
   @action signIn(params: SignInParams) {
-    this.loginState = RequestState.PENDING;
+    this.loginState = StoreHelper.createPendingState();
     return AuthRepository.signIn(params)
       .then(response => {
-        this.loginState = RequestState.DONE;
-        return normalizeResponse(response);
+        this.loginState = StoreHelper.createDoneState(response);
+        return StoreHelper.normalizeResponse(response);
       })
       .catch(err => {
-        this.loginState = RequestState.ERROR;
-        return normalizeResponse(err);
+        this.loginState = StoreHelper.createErrorState(err);
+        return StoreHelper.normalizeResponse(err);
       });
   }
 

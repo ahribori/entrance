@@ -3,7 +3,7 @@ import { Button, Checkbox, Form, Icon, Input } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import styles from './LoginForm.module.scss';
 import { Link } from 'react-router-dom';
-import { NormalizedResponse } from '../store/helper';
+import { NormalizedResponse } from '../store/StoreHelper';
 
 export interface LoginFormValue {
   email: string;
