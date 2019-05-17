@@ -20,11 +20,12 @@ class Login extends Component<any, any> {
   };
 
   render() {
+    const { authStore } = this.props;
     return (
       <CenterLayout>
         <SocialLogin />
         <Divider className={styles.divider}>또는</Divider>
-        <LoginForm onSubmit={this.handleSubmit} />
+        <LoginForm onSubmit={this.handleSubmit} loginState={authStore.loginState} />
       </CenterLayout>
     );
   }

@@ -1,9 +1,9 @@
 import React, { FormEvent, SyntheticEvent } from 'react';
-import { Button, Checkbox, Form, Icon, Input } from 'antd';
+import { Alert, Button, Checkbox, Form, Icon, Input } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import styles from './LoginForm.module.scss';
 import { Link } from 'react-router-dom';
-import { NormalizedResponse } from '../store/StoreHelper';
+import { NormalizedResponse, RequestState } from '../store/StoreHelper';
 
 export interface LoginFormValue {
   email: string;
@@ -12,9 +12,14 @@ export interface LoginFormValue {
 
 interface IProps extends FormComponentProps {
   onSubmit: (values: LoginFormValue) => Promise<NormalizedResponse>;
+  loginState: RequestState;
 }
 
-const LoginForm: React.FunctionComponent<IProps> = ({ form, onSubmit }) => {
+const LoginForm: React.FunctionComponent<IProps> = ({
+  form,
+  onSubmit,
+  loginState,
+}) => {
   const { getFieldDecorator, validateFields } = form;
 
   const handleSubmit = (e: SyntheticEvent<FormEvent>) => {
@@ -23,8 +28,7 @@ const LoginForm: React.FunctionComponent<IProps> = ({ form, onSubmit }) => {
       if (!err) {
         const response = await onSubmit(values);
 
-        if (response){
-
+        if (response) {
         }
       }
     });
@@ -34,7 +38,13 @@ const LoginForm: React.FunctionComponent<IProps> = ({ form, onSubmit }) => {
     <Form onSubmit={handleSubmit}>
       <Form.Item>
         {getFieldDecorator('email', {
-          rules: [{ required: true, message: '이메일을 입력하세요.' }],
+          rules: [
+            { required: true, message: '이메일을 입력하세요.' },
+            {
+              type: 'email',
+              message: '이메일 형식이 아닙니다.',
+            },
+          ],
         })(
           <Input
             prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
@@ -47,7 +57,11 @@ const LoginForm: React.FunctionComponent<IProps> = ({ form, onSubmit }) => {
       </Form.Item>
       <Form.Item>
         {getFieldDecorator('password', {
-          rules: [{ required: true, message: '비밀번호를 입력하세요.' }],
+          rules: [
+            { required: true, message: '비밀번호를 입력하세요.' },
+            { min: 6, message: '비밀번호는 6-30자 사이로 입력하세요.' },
+            { max: 30, message: '비밀번호는 6-30자 사이로 입력하세요.' },
+          ],
         })(
           <Input.Password
             prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
@@ -59,6 +73,14 @@ const LoginForm: React.FunctionComponent<IProps> = ({ form, onSubmit }) => {
           />,
         )}
       </Form.Item>
+      {loginState.error && (
+        <Alert
+          message={'계정 혹은 비밀번호가 일치하지 않습니다.'}
+          type={'error'}
+          closable
+          style={{ marginBottom: 12 }}
+        />
+      )}
       <Form.Item>
         {getFieldDecorator('remember', {
           valuePropName: 'checked',
