@@ -1,5 +1,5 @@
 import * as express from 'express';
-import { body, header, validationResult } from 'express-validator/check';
+import { body, validationResult } from 'express-validator/check';
 import EmailAlreadyVerifiedException from '../../exception/auth/EmailAlreadyVerifiedException';
 import AccountAlreadyExistException from '../../exception/account/AccountAlreadyExistException';
 import { JsonWebTokenError, TokenExpiredError } from 'jsonwebtoken';
@@ -9,6 +9,8 @@ import RequestParamException from '../../exception/common/RequestParamException'
 import asyncRouter from '../../middleware/async-router';
 import * as svgCaptcha from 'svg-captcha';
 import TokenService from '../../service/TokenService';
+import AccountNotFoundException from '../../exception/account/AccountNotFoundException';
+import PasswordNotMatchedException from '../../exception/auth/PasswordNotMatchedException';
 
 const router = express.Router();
 
@@ -56,6 +58,42 @@ router.post(
     } catch (e) {
       if (e instanceof AccountAlreadyExistException) {
         throw new HttpException(409, '이미 사용중인 이메일입니다.');
+      }
+      throw e;
+    }
+  }),
+);
+
+router.post(
+  '/signin',
+  [
+    body('email')
+      .exists()
+      .withMessage('')
+      .isEmail()
+      .withMessage('이메일 형식이 아닙니다.'),
+    body('password')
+      .trim()
+      .matches(/^.{6,30}$/)
+      .withMessage('비밀번호는 6-30자 사이입니다.'),
+  ],
+  asyncRouter(async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      throw new RequestParamException(errors);
+    }
+
+    const { email, password } = req.body;
+    try {
+      const authBag = await AuthService.login(email, password);
+      res.json({
+        auth: authBag,
+      });
+    } catch (e) {
+      if (e instanceof AccountNotFoundException) {
+        throw new HttpException(401, '가입된 계정이 아닙니다.');
+      } else if (e instanceof PasswordNotMatchedException) {
+        throw new HttpException(401, '비밀번호가 틀렸습니다.');
       }
       throw e;
     }
