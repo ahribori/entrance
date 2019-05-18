@@ -53,6 +53,11 @@ class AuthStore {
       });
   }
 
+  @action logout() {
+    this.accessToken = null;
+    localStorage.removeItem('__entrance_access_token__');
+  }
+
   @action loadAccessToken() {
     this.accessToken = window.localStorage.getItem('__entrance_access_token__');
     return this.accessToken;

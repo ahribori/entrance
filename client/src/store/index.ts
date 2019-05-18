@@ -1,3 +1,4 @@
 import authStore from './AuthStore';
+import accountStore from './AccountStore';
 
-export { authStore };
+export { authStore, accountStore };
