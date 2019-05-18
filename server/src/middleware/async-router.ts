@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 
 interface EnhancedRequest extends Request {
   clientIp?: string;
+  accountId?: number;
 }
 
 const asyncRouter = (

@@ -34,7 +34,10 @@ class AccountService {
   }
 
   async findAccountById(accountId: number) {
-    return Account.findByPk(accountId);
+    return Account.findByPk(accountId, {
+      attributes: { exclude: ['password', 'salt'] },
+      include: [{ model: Role, attributes: ['role'] }],
+    });
   }
 
   async findAccountByEmail(email: string) {
