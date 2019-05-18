@@ -16,20 +16,23 @@ class Login extends Component<any, any> {
   };
 
   handleSubmit = async (values: LoginFormValue) => {
-    return AuthStore.signIn(values);
+    const loginResponse = await AuthStore.login(values);
+    if (loginResponse.success) {
+      this.props.history.replace('/');
+    }
   };
 
   render() {
     const { authStore } = this.props;
     return (
-        <CenterLayout>
-          <SocialLogin />
-          <Divider className={styles.divider}>또는</Divider>
-          <LoginForm
-            onSubmit={this.handleSubmit}
-            loginState={authStore.loginState}
-          />
-        </CenterLayout>
+      <CenterLayout>
+        <SocialLogin />
+        <Divider className={styles.divider}>또는</Divider>
+        <LoginForm
+          onSubmit={this.handleSubmit}
+          loginState={authStore.loginState}
+        />
+      </CenterLayout>
     );
   }
 }

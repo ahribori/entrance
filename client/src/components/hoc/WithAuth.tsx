@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { inject, observer } from 'mobx-react';
-import AuthStore  from '../../store/AuthStore';
+import AuthStore from '../../store/AuthStore';
 import { Redirect } from 'react-router';
 
 export interface WithAuthProps {
@@ -9,8 +9,8 @@ export interface WithAuthProps {
 }
 
 const withAuth = <P extends object>(WrappedComponent: React.ComponentType<P>) =>
-  observer(
-    inject('authStore')(
+  inject('authStore')(
+    observer(
       class WithAuth extends React.Component<P & WithAuthProps> {
         state = {
           pending: true,
@@ -18,21 +18,20 @@ const withAuth = <P extends object>(WrappedComponent: React.ComponentType<P>) =>
         };
 
         async checkAuth() {
-          const { authStore } = this.props;
-          const accessToken = AuthStore.loadAccessToken();
+          // const { authStore } = this.props;
+          // const accessToken = AuthStore.loadAccessToken();
 
           return this.setState({ pending: false, loggedIn: true });
         }
 
         render() {
           const { props, state } = this;
-          const { authStore } = props;
           const { pending, loggedIn } = state;
           if (pending) {
             return <div />;
           }
           if (!loggedIn) {
-            return <Redirect to="/" />;
+            return <Redirect to="/login" />;
           }
           return <WrappedComponent {...props as P} auth="auth" />;
         }

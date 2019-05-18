@@ -65,7 +65,7 @@ router.post(
 );
 
 router.post(
-  '/signin',
+  '/login',
   [
     body('email')
       .exists()

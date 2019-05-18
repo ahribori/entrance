@@ -8,7 +8,7 @@ export interface SignUpParams {
   [key: string]: any;
 }
 
-export interface SignInParams {
+export interface LoginParams {
   email: string;
   password: string;
   [key: string]: any;
@@ -28,9 +28,9 @@ class AuthRepository {
     );
   }
 
-  signIn(params: SignInParams) {
+  login(params: LoginParams) {
     return request.post(
-      `${this.baseUrl}/signin`,
+      `${this.baseUrl}/login`,
       queryString.stringify(params),
     );
   }

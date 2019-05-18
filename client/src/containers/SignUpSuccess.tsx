@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { Typography, } from 'antd';
+// import { Typography, } from 'antd';
 import CenterLayout from '../components/layout/CenterLayout';
-import styles from './SignUpSuccess.module.scss';
+// import styles from './SignUpSuccess.module.scss';
 import withAuth from '../components/hoc/WithAuth';
 
-const { Title, Text } = Typography;
+// const { Title, Text } = Typography;
 
 @withAuth
 class SignUpSuccess extends Component {

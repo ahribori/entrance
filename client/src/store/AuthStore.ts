@@ -1,7 +1,7 @@
 import { action, observable } from 'mobx';
 import StoreHelper from './StoreHelper';
 import AuthRepository, {
-  SignInParams,
+  LoginParams,
   SignUpParams,
 } from '../repository/AuthRepository';
 
@@ -40,9 +40,9 @@ class AuthStore {
       });
   }
 
-  @action signIn(params: SignInParams) {
+  @action login(params: LoginParams) {
     this.loginState = StoreHelper.createPendingState();
-    return AuthRepository.signIn(params)
+    return AuthRepository.login(params)
       .then(response => {
         this.loginState = StoreHelper.createDoneState(response);
         return StoreHelper.normalizeResponse(response);

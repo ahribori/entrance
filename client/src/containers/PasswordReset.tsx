@@ -132,7 +132,7 @@ class PasswordReset extends Component<IProps, any> {
               비밀번호 재설정 링크 발송
             </Button>
             <div style={{ paddingTop: 8 }}>
-              <Link to="/">
+              <Link to="/login">
                 <Icon type="left" /> 돌아가기
               </Link>
             </div>
