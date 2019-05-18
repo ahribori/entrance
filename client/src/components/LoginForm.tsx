@@ -51,6 +51,7 @@ const LoginForm: React.FunctionComponent<IProps> = ({
             placeholder="아이디(이메일)"
             size="large"
             autoComplete="email"
+            disabled={loginState.pending}
             style={{ height: 46 }}
           />,
         )}
@@ -69,6 +70,7 @@ const LoginForm: React.FunctionComponent<IProps> = ({
             placeholder="비밀번호"
             size="large"
             autoComplete="password"
+            disabled={loginState.pending}
             style={{ height: 46 }}
           />,
         )}
@@ -85,7 +87,7 @@ const LoginForm: React.FunctionComponent<IProps> = ({
         {getFieldDecorator('remember', {
           valuePropName: 'checked',
           initialValue: false,
-        })(<Checkbox>아이디 저장</Checkbox>)}
+        })(<Checkbox disabled={loginState.pending}>아이디 저장</Checkbox>)}
         <Link to="/password-reset" className={styles.right}>
           비밀번호 재설정
         </Link>
@@ -97,6 +99,7 @@ const LoginForm: React.FunctionComponent<IProps> = ({
           block
           style={{ height: 46 }}
           icon="unlock"
+          loading={loginState.pending}
         >
           로그인
         </Button>
