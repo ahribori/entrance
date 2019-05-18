@@ -29,10 +29,7 @@ class AuthRepository {
   }
 
   login(params: LoginParams) {
-    return request.post(
-      `${this.baseUrl}/login`,
-      queryString.stringify(params),
-    );
+    return request.post(`${this.baseUrl}/login`, queryString.stringify(params));
   }
 }
 

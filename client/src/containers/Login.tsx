@@ -18,6 +18,9 @@ class Login extends Component<any, any> {
   handleSubmit = async (values: LoginFormValue) => {
     const loginResponse = await AuthStore.login(values);
     if (loginResponse.success) {
+      this.props.authStore.storeAccessToken(
+        loginResponse.data.auth.accessToken,
+      );
       this.props.history.replace('/');
     }
   };
