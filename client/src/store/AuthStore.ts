@@ -8,6 +8,7 @@ import AuthRepository, {
 class AuthStore {
   @observable signUpState = StoreHelper.createInitialState();
   @observable loginState = StoreHelper.createInitialState();
+  @observable passwordResetMailState = StoreHelper.createInitialState();
   @observable captcha = { svg: '', code: '' };
   @observable accessToken: string | null = null;
 
@@ -66,6 +67,18 @@ class AuthStore {
   @action storeAccessToken(accessToken: string) {
     localStorage.setItem('__entrance_access_token__', accessToken);
     return accessToken;
+  }
+
+  @action sendPasswordResetMail(email: string) {
+    return AuthRepository.sendPasswordResetMail(email)
+      .then(response => {
+        this.passwordResetMailState = StoreHelper.createDoneState(response);
+        return StoreHelper.normalizeResponse(response);
+      })
+      .catch(err => {
+        this.passwordResetMailState = StoreHelper.createErrorState(err);
+        return StoreHelper.normalizeResponse(err);
+      });
   }
 }
 

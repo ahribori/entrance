@@ -31,6 +31,10 @@ class AuthRepository {
   login(params: LoginParams) {
     return request.post(`${this.baseUrl}/login`, queryString.stringify(params));
   }
+
+  sendPasswordResetMail(email: string) {
+    return request.post(`${this.baseUrl}/send-password-reset-code`, { email });
+  }
 }
 
 export default new AuthRepository();
