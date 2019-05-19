@@ -5,6 +5,7 @@ export enum TokenType {
   ACCESS_TOKEN = 'access_token',
   REFRESH_TOKEN = 'refresh_token',
   EMAIL_VERIFICATION_TOKEN = 'email_verification_token',
+  PASSWORD_RESET_TOKEN = 'password_reset_token',
 }
 
 export interface TokenPayload {
@@ -58,6 +59,14 @@ class TokenService {
       expiresIn: '10m',
       issuer: 'entrance',
       subject: TokenType.EMAIL_VERIFICATION_TOKEN,
+    });
+  }
+
+  issuePasswordResetToken(payload: TokenPayload) {
+    return jwt.sign(payload, this.secret, {
+      expiresIn: '10m',
+      issuer: 'entrance',
+      subject: TokenType.PASSWORD_RESET_TOKEN,
     });
   }
 

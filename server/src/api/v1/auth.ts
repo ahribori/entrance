@@ -11,6 +11,7 @@ import * as svgCaptcha from 'svg-captcha';
 import TokenService from '../../service/TokenService';
 import AccountNotFoundException from '../../exception/account/AccountNotFoundException';
 import PasswordNotMatchedException from '../../exception/auth/PasswordNotMatchedException';
+import AccountService from '../../service/AccountService';
 
 const router = express.Router();
 
@@ -139,6 +140,23 @@ router.post(
       }
       throw new HttpException(400, '잘못된 요청입니다.');
     }
+  }),
+);
+
+
+router.post(
+  '/send-password-reset-code',
+  asyncRouter(async (req, res) => {
+    const { email } = req.body;
+    const account = await AccountService.findAccountByEmail(email);
+    if (!account) {
+      throw new HttpException(404, '가입된 계정이 아닙니다.');
+    }
+    const passwordResetCode = TokenService.issuePasswordResetToken({
+      accountId: account.id,
+    });
+    // 메일 보내기
+    res.json(passwordResetCode);
   }),
 );
 
