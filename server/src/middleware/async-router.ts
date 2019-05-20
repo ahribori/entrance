@@ -1,8 +1,9 @@
 import { NextFunction, Request, Response } from 'express';
+import { VerifiedPayload } from '../service/TokenService';
 
 interface EnhancedRequest extends Request {
   clientIp?: string;
-  accountId?: number;
+  tokenPayload?: VerifiedPayload;
 }
 
 const asyncRouter = (

@@ -9,8 +9,7 @@ const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
     throw new HttpException(401, '잘못된 토큰입니다.');
   }
   try {
-    const verified = TokenService.verifyToken(accessToken);
-    (req as any).accountId = verified.accountId;
+    (req as any).tokenPayload = TokenService.verifyToken(accessToken);
     next();
   } catch (e) {
     if (e instanceof JsonWebTokenError) {
