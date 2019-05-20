@@ -14,6 +14,9 @@ const Index = loadDynamic(import('./containers/Index'));
 const Login = loadDynamic(import('./containers/Login'));
 const SignUp = loadDynamic(import('./containers/SignUp'));
 const SignUpSuccess = loadDynamic(import('./containers/SignUpSuccess'));
+const SendPasswordResetCode = loadDynamic(
+  import('./containers/SendPasswordResetCode'),
+);
 const PasswordReset = loadDynamic(import('./containers/PasswordReset'));
 
 // @ts-ignore
@@ -23,6 +26,11 @@ export default (
     <Route exact path="/login" component={Login} />
     <Route exact path="/signup" component={SignUp} />
     <Route exact path="/signup/success" component={SignUpSuccess} />
+    <Route
+      exact
+      path="/send-password-reset-code"
+      component={SendPasswordResetCode}
+    />
     <Route exact path="/password-reset" component={PasswordReset} />
   </Switch>
 );

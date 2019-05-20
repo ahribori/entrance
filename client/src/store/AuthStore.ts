@@ -5,6 +5,13 @@ import AuthRepository, {
   SignUpParams,
 } from '../repository/AuthRepository';
 
+export enum TokenType {
+  ACCESS_TOKEN = 'access_token',
+  REFRESH_TOKEN = 'refresh_token',
+  EMAIL_VERIFICATION_TOKEN = 'email_verification_token',
+  PASSWORD_RESET_TOKEN = 'password_reset_token',
+}
+
 class AuthStore {
   @observable signUpState = StoreHelper.createInitialState();
   @observable loginState = StoreHelper.createInitialState();
@@ -67,6 +74,16 @@ class AuthStore {
   @action storeAccessToken(accessToken: string) {
     localStorage.setItem('__entrance_access_token__', accessToken);
     return accessToken;
+  }
+
+  @action verifyToken(token: string) {
+    return AuthRepository.verifyToken(token)
+      .then(response => {
+        return StoreHelper.normalizeResponse(response);
+      })
+      .catch(err => {
+        return StoreHelper.normalizeResponse(err);
+      });
   }
 
   @action sendPasswordResetMail(email: string) {

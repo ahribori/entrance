@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { Icon, Typography } from 'antd';
-import styles from './PasswordReset.module.scss';
+import styles from './SendPasswordResetCode.module.scss';
 import CenterLayout from '../components/layout/CenterLayout';
 import { FormComponentProps } from 'antd/lib/form';
 import { inject, observer } from 'mobx-react';
-import AuthStore from '../store/AuthStore';
+import AuthStore, { TokenType } from '../store/AuthStore';
 import queryString from 'query-string';
 import PasswordResetForm from '../components/PasswordResetForm';
-import PasswordResetMailForm from '../components/PasswordResetMailForm';
+import ErrorPage from '../components/ErrorPage';
 
 const { Title, Text } = Typography;
 
@@ -17,59 +17,65 @@ interface IProps extends FormComponentProps {
 
 interface IState {
   code?: string;
+  pending: boolean;
+  hasVerifiedCode: boolean;
 }
 
 @inject('authStore')
 @observer
-class PasswordReset extends Component<IProps, IState> {
+class SendPasswordResetCode extends Component<IProps, IState> {
   state = {
-    ...queryString.parse(window.location.search),
+    ...(queryString.parse(window.location.search) as { code: string }),
+    pending: true,
+    hasVerifiedCode: false,
   };
 
-  sendPasswordResetMail = async (email: string) => {
-    const response = await AuthStore.sendPasswordResetMail(email);
-    if (response.success) {
+  private async verifyCode() {
+    const { code } = this.state;
+    if (!code) {
+      return this.setState({ pending: false });
     }
-    return response;
-  };
+    const verifyResponse = await AuthStore.verifyToken(code);
+    return this.setState({
+      pending: false,
+      hasVerifiedCode:
+        verifyResponse.success &&
+        verifyResponse.data.sub === TokenType.PASSWORD_RESET_TOKEN,
+    });
+  }
 
   requestPasswordReset = async (password: string) => {
     const { code } = this.state;
+    console.log(code);
   };
 
   render() {
-    const { authStore } = this.props;
-    const { code } = this.state;
+    const { pending, hasVerifiedCode } = this.state;
+
+    if (pending) {
+      return null;
+    }
+
+    if (!hasVerifiedCode) {
+      return <ErrorPage title="잘못된 접근입니다." />;
+    }
+
     return (
       <CenterLayout>
         <div className={styles.center}>
           <Title level={4}>
             <Icon type="safety" /> 비밀번호 재설정
           </Title>
-          {code ? (
-            <Text type="secondary">새로운 비밀번호를 입력하세요.</Text>
-          ) : (
-            <Text type="secondary">
-              가입한 계정 이메일로 비밀번호 재설정 링크가 <br />
-              발송됩니다.
-            </Text>
-          )}
+          <Text type="secondary">새로운 비밀번호를 입력하세요.</Text>
         </div>
-        {code ? (
-          <PasswordResetForm onSubmit={this.requestPasswordReset} />
-        ) : (
-          <PasswordResetMailForm
-            captcha={authStore.captcha}
-            onSubmit={this.sendPasswordResetMail}
-          />
-        )}
+        <PasswordResetForm onSubmit={this.requestPasswordReset} />
       </CenterLayout>
     );
   }
 
   componentDidMount(): void {
-    AuthStore.fetchCaptcha();
+    this.verifyCode();
   }
 }
 
-export default PasswordReset;
+export default SendPasswordResetCode;

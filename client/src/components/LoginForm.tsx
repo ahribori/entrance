@@ -85,7 +85,7 @@ const LoginForm: React.FunctionComponent<IProps> = ({
           valuePropName: 'checked',
           initialValue: false,
         })(<Checkbox disabled={loginState.pending}>아이디 저장</Checkbox>)}
-        <Link to="/password-reset" className={styles.right}>
+        <Link to="/send-password-reset-code" className={styles.right}>
           비밀번호 재설정
         </Link>
         <Button

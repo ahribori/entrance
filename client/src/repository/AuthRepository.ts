@@ -32,6 +32,14 @@ class AuthRepository {
     return request.post(`${this.baseUrl}/login`, queryString.stringify(params));
   }
 
+  verifyToken(token: string) {
+    return request.post(
+      `${this.baseUrl}/verify`,
+      {},
+      { headers: { authorization: token } },
+    );
+  }
+
   sendPasswordResetMail(email: string) {
     return request.post(`${this.baseUrl}/send-password-reset-code`, { email });
   }
