@@ -7,7 +7,8 @@ const router = express.Router();
 router.get(
   '/me',
   asyncRouter(async (req, res) => {
-    const accountId = req.accountId || 0;
+    if (!req.tokenPayload) return;
+    const accountId = Number(req.tokenPayload.accountId);
     const account = await AccountService.findAccountById(accountId);
     res.json(account);
   }),
