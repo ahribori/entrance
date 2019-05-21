@@ -15,6 +15,16 @@ class AccountStore {
         return StoreHelper.normalizeResponse(err);
       });
   }
+
+  @action passwordReset(password: string, code: string) {
+    return AccountRepository.resetPassword(password, code)
+      .then(response => {
+        return StoreHelper.normalizeResponse(response);
+      })
+      .catch(err => {
+        return StoreHelper.normalizeResponse(err);
+      });
+  }
 }
 
 export default new AccountStore();
