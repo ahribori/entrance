@@ -143,7 +143,6 @@ router.post(
   }),
 );
 
-
 router.post(
   '/send-password-reset-code',
   asyncRouter(async (req, res) => {
@@ -159,5 +158,6 @@ router.post(
     res.json(passwordResetCode);
   }),
 );
+
 
 export default router;
