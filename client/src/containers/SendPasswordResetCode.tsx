@@ -6,10 +6,11 @@ import { FormComponentProps } from 'antd/lib/form';
 import { inject, observer } from 'mobx-react';
 import AuthStore from '../store/AuthStore';
 import PasswordResetMailForm from '../components/PasswordResetMailForm';
+import { RouteComponentProps } from 'react-router';
 
 const { Title, Text } = Typography;
 
-interface IProps extends FormComponentProps {
+interface IProps extends FormComponentProps, RouteComponentProps {
   authStore: typeof AuthStore;
 }
 
@@ -23,6 +24,7 @@ class SendPasswordResetCode extends Component<IProps, IState> {
   sendPasswordResetMail = async (email: string) => {
     const response = await AuthStore.sendPasswordResetMail(email);
     if (response.success) {
+      this.props.history.replace('/send-password-reset-code/success');
     }
     return response;
   };

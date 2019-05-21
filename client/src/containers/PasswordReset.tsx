@@ -8,10 +8,12 @@ import AuthStore, { TokenType } from '../store/AuthStore';
 import queryString from 'query-string';
 import PasswordResetForm from '../components/PasswordResetForm';
 import ErrorPage from '../components/ErrorPage';
+import AccountStore from '../store/AccountStore';
+import { RouteComponentProps } from 'react-router';
 
 const { Title, Text } = Typography;
 
-interface IProps extends FormComponentProps {
+interface IProps extends FormComponentProps, RouteComponentProps {
   authStore: typeof AuthStore;
 }
 
@@ -46,6 +48,10 @@ class SendPasswordResetCode extends Component<IProps, IState> {
 
   requestPasswordReset = async (password: string) => {
     const { code } = this.state;
+    const response = await AccountStore.passwordReset(password, code);
+    if (response.success) {
+      this.props.history.replace('/password-reset/success');
+    }
     console.log(code);
   };
 

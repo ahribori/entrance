@@ -17,7 +17,13 @@ const SignUpSuccess = loadDynamic(import('./containers/SignUpSuccess'));
 const SendPasswordResetCode = loadDynamic(
   import('./containers/SendPasswordResetCode'),
 );
+const SendPasswordResetCodeSuccess = loadDynamic(
+  import('./containers/SendPasswordResetCodeSuccess'),
+);
 const PasswordReset = loadDynamic(import('./containers/PasswordReset'));
+const PasswordResetSuccess = loadDynamic(
+  import('./containers/PasswordResetSuccess'),
+);
 
 // @ts-ignore
 export default (
@@ -31,6 +37,16 @@ export default (
       path="/send-password-reset-code"
       component={SendPasswordResetCode}
     />
+    <Route
+      exact
+      path="/send-password-reset-code/success"
+      component={SendPasswordResetCodeSuccess}
+    />
     <Route exact path="/password-reset" component={PasswordReset} />
+    <Route
+      exact
+      path="/password-reset/success"
+      component={PasswordResetSuccess}
+    />
   </Switch>
 );
