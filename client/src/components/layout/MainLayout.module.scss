@@ -1,0 +1,14 @@
+@import '../../styles/lib';
+
+.container {
+  margin: 0 auto;
+  box-shadow: 1px 1px 7px #dddddd;
+  @include responsive(lg) {
+    margin-top: 50px;
+    width: 800px;
+  }
+  @include responsive(xl) {
+    margin-top: 100px;
+    width: 1000px;
+  }
+}
