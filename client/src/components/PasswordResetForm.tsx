@@ -1,7 +1,6 @@
 import React, { FormEvent, SyntheticEvent } from 'react';
 import { Button, Form, Icon, Input } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
-import { Link } from 'react-router-dom';
 
 interface IProps extends FormComponentProps {
   onSubmit: (password: string) => void;
@@ -78,11 +77,6 @@ const PasswordResetForm: React.FunctionComponent<IProps> = ({
         >
           비밀번호 재설정
         </Button>
-        <div style={{ paddingTop: 8 }}>
-          <Link to="/login">
-            <Icon type="left" /> 돌아가기
-          </Link>
-        </div>
       </Form.Item>
     </Form>
   );

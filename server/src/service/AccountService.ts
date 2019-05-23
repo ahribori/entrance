@@ -76,8 +76,8 @@ class AccountService {
     return result;
   }
 
-  async changePassword(email: string, newPassword: string) {
-    const account = await Account.findOne({ where: { email } });
+  async changePassword(accountId: number, newPassword: string) {
+    const account = await Account.findByPk(accountId);
     if (!account) {
       throw new AccountNotFoundException();
     }
