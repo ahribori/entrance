@@ -2,15 +2,12 @@
 
 .container {
   min-width: 380px;
-
-  @include responsive(large) {
-    padding-top: 150px;
-  }
-  @include responsive(medium) {
+  padding-top: 50px;
+  @include responsive(md) {
     padding-top: 100px;
   }
-  @include responsive(small) {
-    padding-top: 50px;
+  @include responsive(lg) {
+    padding-top: 150px;
   }
 
   .text {
