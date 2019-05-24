@@ -10,7 +10,7 @@ const loadDynamic = (dynamicImport: Promise<any>) =>
     loading: Loading,
   });
 
-const Index = loadDynamic(import('./containers/Index'));
+const UserContext = loadDynamic(import('./containers/user-context/Layout'));
 const Login = loadDynamic(import('./containers/Login'));
 const SignUp = loadDynamic(import('./containers/SignUp'));
 const SignUpSuccess = loadDynamic(import('./containers/SignUpSuccess'));
@@ -25,10 +25,9 @@ const PasswordResetSuccess = loadDynamic(
   import('./containers/PasswordResetSuccess'),
 );
 
-// @ts-ignore
 export default (
   <Switch>
-    <Route exact path="/" component={Index} />
+    <Route exact path="/" component={UserContext} />
     <Route exact path="/login" component={Login} />
     <Route exact path="/signup" component={SignUp} />
     <Route exact path="/signup/success" component={SignUpSuccess} />
