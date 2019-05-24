@@ -2,8 +2,33 @@ import { action, observable } from 'mobx';
 import AccountRepository from '../repository/AccountRepository';
 import StoreHelper from './StoreHelper';
 
+export enum AccountType {
+  LOCAL = 'LOCAL',
+  KAKAO = 'KAKAO',
+  NAVER = 'NAVER',
+  GOOGLE = 'GOOGLE',
+  FACEBOOK = 'FACEBOOK',
+}
+
+export interface IAccountDetails {
+  accountType: AccountType;
+  active: boolean;
+  createdAt: Date;
+  deletedAt: Date | null;
+  email: string;
+  emailVerified: boolean;
+  exp: number;
+  id: number;
+  nickname: string;
+  point: number;
+  profileImage?: string;
+  roles: { role: string }[];
+  thumbnailImage?: string;
+  updatedAt: Date;
+}
+
 class AccountStore {
-  @observable accountDetails = null;
+  @observable accountDetails: IAccountDetails | null = null;
 
   @action fetchAccountDetails(accessToken: string) {
     return AccountRepository.fetchAccountDetails(accessToken)
