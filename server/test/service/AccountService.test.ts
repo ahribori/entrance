@@ -137,7 +137,7 @@ describe('AccountService Tests', () => {
     );
 
     const passwordChangedAccount = await AccountService.changePassword(
-      account.email,
+      account.id,
       newPassword,
     );
     try {
