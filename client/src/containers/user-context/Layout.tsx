@@ -4,8 +4,9 @@ import AccountStore from '../../store/AccountStore';
 import withAuth from '../../components/hoc/WithAuth';
 import MainLayout from '../../components/layout/MainLayout';
 import routes from './routes';
+import { RouteComponentProps } from 'react-router';
 
-interface IProps {
+interface IProps extends RouteComponentProps {
   authStore: typeof AuthStore;
   accountStore: typeof AccountStore;
 }
@@ -13,7 +14,15 @@ interface IProps {
 @withAuth
 class Layout extends Component<IProps, any> {
   render() {
-    return <MainLayout>{routes}</MainLayout>;
+    const { accountDetails } = this.props.accountStore;
+    return (
+      <MainLayout
+        accountDetails={accountDetails}
+        pathname={this.props.location.pathname}
+      >
+        {routes}
+      </MainLayout>
+    );
   }
 }
 

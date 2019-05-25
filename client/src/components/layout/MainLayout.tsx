@@ -4,12 +4,22 @@ import { Avatar, Card, Icon, Layout, Menu, PageHeader } from 'antd';
 import { IAccountDetails } from '../../store/AccountStore';
 import Meta from 'antd/es/card/Meta';
 import AuthStore from '../../store/AuthStore';
+import { Link } from 'react-router-dom';
 
 const { Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 
+const pageHeaderMetaMap: any = {
+  '/': { title: '내 계정', subTitle: '내 계정을 관리하고 수정합니다.' },
+  '/password-change': {
+    title: '비밀번호 변경',
+    subTitle: '비밀번호를 변경합니다.',
+  },
+};
+
 interface IProps {
   accountDetails: IAccountDetails | null;
+  pathname: string;
 }
 
 const SideMenu = () => (
@@ -23,8 +33,10 @@ const SideMenu = () => (
         </span>
       }
     >
-      <Menu.Item key="1">내 계정</Menu.Item>
-      <Menu.Item key="2">비밀번호 변경</Menu.Item>
+      <Menu.Item key="1"><Link to="/">내 계정</Link></Menu.Item>
+      <Menu.Item key="2">
+        <Link to="/password-change">비밀번호 변경</Link>
+      </Menu.Item>
     </SubMenu>
     <Menu.Item key="7">
       <span>
@@ -50,17 +62,20 @@ const SideMenu = () => (
 const MainLayout: React.FunctionComponent<IProps> = ({
   children,
   accountDetails,
+  pathname,
 }) => {
   if (!accountDetails) {
     return null;
   }
 
+  const pageHeaderMeta = pageHeaderMetaMap[pathname] || {};
+
   return (
     <div className={styles.container}>
       <PageHeader
-        onBack={() => window.history.back()}
-        title="Title"
-        subTitle="This is a subtitle"
+        onBack={pathname !== '/' ? () => window.history.back() : undefined}
+        title={pageHeaderMeta.title}
+        subTitle={pageHeaderMeta.subTitle}
       />
       <Layout style={{ background: '#fff', borderTop: '1px solid #E8E8E8' }}>
         <Sider

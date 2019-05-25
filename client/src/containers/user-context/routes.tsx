@@ -11,9 +11,11 @@ const loadDynamic = (dynamicImport: Promise<any>) =>
   });
 
 const Index = loadDynamic(import('./pages/Index'));
+const PasswordChange= loadDynamic(import('./pages/ChangePassword'));
 
 export default (
   <Switch>
     <Route exact path="/" component={Index} />
+    <Route exact path="/password-change" component={PasswordChange} />
   </Switch>
 );

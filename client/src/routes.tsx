@@ -27,7 +27,6 @@ const PasswordResetSuccess = loadDynamic(
 
 export default (
   <Switch>
-    <Route exact path="/" component={UserContext} />
     <Route exact path="/login" component={Login} />
     <Route exact path="/signup" component={SignUp} />
     <Route exact path="/signup/success" component={SignUpSuccess} />
@@ -47,5 +46,6 @@ export default (
       path="/password-reset/success"
       component={PasswordResetSuccess}
     />
+    <Route path="/" component={UserContext} />
   </Switch>
 );

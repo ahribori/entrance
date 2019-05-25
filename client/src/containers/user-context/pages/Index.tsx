@@ -6,13 +6,7 @@ class Index extends Component {
   render() {
     return (
       <div>
-        <Button
-          onClick={() => {
-            AuthStore.logout();
-          }}
-        >
-          로그아웃
-        </Button>
+        내 계정
       </div>
     );
   }
