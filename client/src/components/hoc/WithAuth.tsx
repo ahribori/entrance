@@ -31,7 +31,8 @@ const withAuth = <P extends object>(WrappedComponent: React.ComponentType<P>) =>
           const accountDetails = await accountStore.fetchAccountDetails(
             accessToken,
           );
-          if (!accountDetails.success) {
+          if (!accountDetails.success || accountDetails.data === null) {
+            AuthStore.logout();
             return this.setState({ pending: false, loggedIn: false });
           }
           return this.setState({ pending: false, loggedIn: true });
@@ -43,7 +44,7 @@ const withAuth = <P extends object>(WrappedComponent: React.ComponentType<P>) =>
           const { accessToken } = props.authStore;
 
           if (pending) {
-            return <span/>
+            return <span />;
           }
 
           if (!accessToken || !loggedIn) {
