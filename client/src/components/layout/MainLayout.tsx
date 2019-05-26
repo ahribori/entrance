@@ -15,6 +15,18 @@ const pageHeaderMetaMap: any = {
     title: '비밀번호 변경',
     subTitle: '비밀번호를 변경합니다.',
   },
+  '/login-history': {
+    title: '로그인 이력',
+    subTitle: '로그인 이력과 접속정보를 관리합니다.',
+  },
+  '/service-management': {
+    title: '연결된 서비스 관리',
+    subTitle: '연결된 서비스를 확인하고 연결을 해제할 수 있습니다.',
+  },
+  '/application-management': {
+    title: '어플리케이션 관리',
+    subTitle: '계정을 사용할 어플리케이션을 관리합니다. (개발자 전용)',
+  },
 };
 
 interface IProps {
@@ -22,8 +34,8 @@ interface IProps {
   pathname: string;
 }
 
-const SideMenu = () => (
-  <Menu mode="inline" defaultSelectedKeys={['1']} defaultOpenKeys={['sub1']}>
+const SideMenu: React.FunctionComponent<IProps> = ({ pathname }) => (
+  <Menu mode="inline" selectedKeys={[pathname]} defaultOpenKeys={['sub1']}>
     <SubMenu
       key="sub1"
       title={
@@ -33,28 +45,30 @@ const SideMenu = () => (
         </span>
       }
     >
-      <Menu.Item key="1"><Link to="/">내 계정</Link></Menu.Item>
-      <Menu.Item key="2">
+      <Menu.Item key="/">
+        <Link to="/">내 계정</Link>
+      </Menu.Item>
+      <Menu.Item key="/password-change">
         <Link to="/password-change">비밀번호 변경</Link>
       </Menu.Item>
     </SubMenu>
-    <Menu.Item key="7">
-      <span>
+    <Menu.Item key="/login-history">
+      <Link to="/login-history">
         <Icon type="laptop" />
         로그인 이력
-      </span>
+      </Link>
     </Menu.Item>
-    <Menu.Item key="8">
-      <span>
+    <Menu.Item key="/service-management">
+      <Link to="/service-management">
         <Icon type="deployment-unit" />
         연결된 서비스 관리
-      </span>
+      </Link>
     </Menu.Item>
-    <Menu.Item key="9">
-      <span>
+    <Menu.Item key="/application-management">
+      <Link to="/application-management">
         <Icon type="code" />
         어플리케이션 관리
-      </span>
+      </Link>
     </Menu.Item>
   </Menu>
 );
@@ -68,12 +82,16 @@ const MainLayout: React.FunctionComponent<IProps> = ({
     return null;
   }
 
+  const handleBack = () => {
+    window.history.back();
+  };
+
   const pageHeaderMeta = pageHeaderMetaMap[pathname] || {};
 
   return (
     <div className={styles.container}>
       <PageHeader
-        onBack={pathname !== '/' ? () => window.history.back() : undefined}
+        onBack={handleBack}
         title={pageHeaderMeta.title}
         subTitle={pageHeaderMeta.subTitle}
       />
@@ -104,7 +122,7 @@ const MainLayout: React.FunctionComponent<IProps> = ({
               description={accountDetails.email}
             />
           </Card>
-          <SideMenu />
+          <SideMenu pathname={pathname} accountDetails={accountDetails} />
         </Sider>
         <Content style={{ padding: '24px', minHeight: 700 }}>
           {children}
