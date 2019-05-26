@@ -10,13 +10,25 @@ const loadDynamic = (dynamicImport: Promise<any>) =>
     loading: Loading,
   });
 
-const Index = loadDynamic(import('./pages/Index'));
+const MyAccount = loadDynamic(import('./pages/MyAccount'));
 const PasswordChange = loadDynamic(import('./pages/ChangePassword'));
+const LoginHistory = loadDynamic(import('./pages/LoginHistory'));
+const ServiceManagement = loadDynamic(import('./pages/ServiceManagement'));
+const ApplicationManagement = loadDynamic(
+  import('./pages/ApplicationManagement'),
+);
 
 export default (
   <Switch>
-    <Route exact path="/" component={Index} />
+    <Route exact path="/" component={MyAccount} />
     <Route exact path="/password-change" component={PasswordChange} />
+    <Route exact path="/login-history" component={LoginHistory} />
+    <Route exact path="/service-management" component={ServiceManagement} />
+    <Route
+      exact
+      path="/application-management"
+      component={ApplicationManagement}
+    />
     <Route render={() => <Redirect to="/" />} />
   </Switch>
 );
