@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider as MobxProvider } from 'mobx-react';
-import MobxDevTools from 'mobx-react-devtools';
 import * as stores from './store';
 import './styles/index.scss';
 
@@ -12,10 +11,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 ReactDOM.render(
   <Router>
     <MobxProvider {...stores}>
-      <>
-        <MobxDevTools />
-        <App />
-      </>
+      <App />
     </MobxProvider>
   </Router>,
   document.getElementById('root'),
